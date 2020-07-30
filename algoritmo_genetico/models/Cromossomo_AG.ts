@@ -9,6 +9,8 @@ import { RestricaoProfessorHorarioPorDia_AG } from "./restricoes/RestricaoProfes
 import { RestricaoMateriaSala_AG } from "./restricoes/RestricaoMateriaSala_AG";
 import { RestricaoHorarioPorDiaPeriodo_AG } from "./restricoes/RestricaoHorarioPorDiaPeriodo_AG";
 import { ResultadoCrossOver_AG } from './ResultadoCrossover_AG';
+import { Materia } from '../../interfaces/Materia';
+import { ValidacaoQuantidadeAulas } from './ValidacaoQuantidadeAulas_AG';
 
 export class Cromossomo_AG{
   public aptidao: number = 0;
@@ -17,11 +19,9 @@ export class Cromossomo_AG{
   constructor(
     horarios: Horario_AG [],
     salas: Sala_AG [], 
-    aulas: Aula_AG [], 
-    restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia_AG []) {
-
-      const aulasAux = clone(aulas);
-
+    restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia_AG [],
+    aulas?: Aula_AG []
+  ) {
       for (let horario of horarios) {
         const salasAux: Sala_AG [] = [];
         for (let sala of salas) {
@@ -37,23 +37,26 @@ export class Cromossomo_AG{
           }
         }
        
-        let horarioAux = new Horario_AG(horario.id,2);
+        let horarioAux = clone(horario);
         horarioAux.salas = salasAux;
 
-        while (horarioAux.qtde_aulas_simultaneas < horarioAux.max_qtde_aulas_simultaneas) {
-          let indexSala: number;
-          do {
-            indexSala = Math.floor(Math.random() * horarioAux.salas.length);
-
-          } while (horarioAux.salas[indexSala].aula);
-
-          const indexAula = Math.floor(Math.random() * aulasAux.length);
-
-          horarioAux.salas[indexSala].aula = aulasAux[indexAula];
-
-          aulasAux.splice(indexAula,1);
-
-          horarioAux.qtde_aulas_simultaneas = horarioAux.qtde_aulas_simultaneas + 1;
+        if (aulas) {
+          const aulasAux = clone(aulas);
+          while (horarioAux.qtde_aulas_simultaneas < horarioAux.max_qtde_aulas_simultaneas) {
+            let indexSala: number;
+            do {
+              indexSala = Math.floor(Math.random() * horarioAux.salas.length);
+  
+            } while (horarioAux.salas[indexSala].aula);
+  
+            const indexAula = Math.floor(Math.random() * aulasAux.length);
+  
+            horarioAux.salas[indexSala].aula = aulasAux[indexAula];
+  
+            aulasAux.splice(indexAula,1);
+  
+            horarioAux.qtde_aulas_simultaneas = horarioAux.qtde_aulas_simultaneas + 1;
+          }
         }
 
         this.horarios.push(horarioAux);
@@ -72,30 +75,87 @@ export class Cromossomo_AG{
       // }
   }
 
-  public static crossOverUniforme(cromossomo1: Cromossomo_AG, cromossomo2: Cromossomo_AG): ResultadoCrossOver_AG {
-    const cromossomo1Aux = clone(cromossomo1)
-    const cromossomo2Aux = clone(cromossomo2)
+  public static crossOverUniforme(
+    cromossomo1: Cromossomo_AG, 
+    cromossomo2: Cromossomo_AG
+  ): ResultadoCrossOver_AG {
+    const cromossomo1Aux = clone(cromossomo1);
+    const cromossomo2Aux = clone(cromossomo2);
 
-    const filho1 = clone(cromossomo1)
-    const filho2 = clone(cromossomo2)
+    const filho1 = clone(cromossomo1);
+    const filho2 = clone(cromossomo2);
 
+    
+  
     for (let i = 0; i < cromossomo1Aux.horarios.length; i = i + 1) { 
       filho1.horarios[i].qtde_aulas_simultaneas = 0;
       filho2.horarios[i].qtde_aulas_simultaneas = 0;
+     
       for(let j = 0; j < cromossomo1Aux.horarios[i].salas.length; j = j + 1) {
         const numeroSorteio = Math.floor(Math.random() * 2);
 
+        let filho1Aula: Aula_AG;
+        let filho2Aula: Aula_AG;
+
         if (numeroSorteio == 0) {
-          filho1.horarios[i].salas[j].aula =  cromossomo1Aux.horarios[i].salas[j].aula;
-          filho2.horarios[i].salas[j].aula =  cromossomo2Aux.horarios[i].salas[j].aula;  
+          filho1Aula = cromossomo1Aux.horarios[i].salas[j].aula!;
+          filho2Aula =  cromossomo2Aux.horarios[i].salas[j].aula!;  
         }
-        else if (numeroSorteio == 1) {
-          filho1.horarios[i].salas[j].aula =  cromossomo2Aux.horarios[i].salas[j].aula;
-          filho2.horarios[i].salas[j].aula =  cromossomo1Aux.horarios[i].salas[j].aula;
+        else {
+          filho1Aula = cromossomo2Aux.horarios[i].salas[j].aula!;
+          filho2Aula =  cromossomo1Aux.horarios[i].salas[j].aula!; 
+        }
+
+        if (filho1Aula && filho1.horarios[i].qtde_aulas_simultaneas >= filho1.horarios[i].max_qtde_aulas_simultaneas) {
+          
+          if (filho2Aula) {
+            filho2.horarios[i].qtde_aulas_simultaneas++
+          }
+          filho2.horarios[i].salas[j].aula = filho2Aula
+          filho1.horarios[i].salas[j].aula = undefined;
+
+          let index: number;
+          do {
+            index = Math.floor(Math.random() * filho2.horarios[i].salas.length);
+          } while(filho2.horarios[i].salas[index].aula || index >= j);
+
+          if (filho1Aula) {
+            filho2.horarios[i].qtde_aulas_simultaneas++
+          }
+          filho2.horarios[i].salas[index].aula = filho1Aula;
+          
+        } else if (filho2Aula && filho2.horarios[i].qtde_aulas_simultaneas >= filho2.horarios[i].max_qtde_aulas_simultaneas) {
+
+          if (filho1Aula) {
+            filho1.horarios[i].qtde_aulas_simultaneas++
+          }
+          filho1.horarios[i].salas[j].aula = filho1Aula
+          filho2.horarios[i].salas[j].aula = undefined;
+          
+          let index: number;
+          do {
+            index = Math.floor(Math.random() * filho1.horarios[i].salas.length);
+          } while(filho1.horarios[i].salas[index].aula || index >= j);
+
+          if (filho2Aula) {
+            filho1.horarios[i].qtde_aulas_simultaneas++;
+          }
+          filho1.horarios[i].salas[index].aula = filho2Aula;
+
+        } else {
+          filho1.horarios[i].salas[j].aula = filho1Aula;
+          if (filho1Aula) {
+            filho1.horarios[i].qtde_aulas_simultaneas++;
+          }
+  
+          filho2.horarios[i].salas[j].aula = filho2Aula
+          if (filho2Aula) {
+            filho2.horarios[i].qtde_aulas_simultaneas++;
+          }
         }
       }
     }
-
+    
     return new ResultadoCrossOver_AG(filho1, filho2);
   }
 
