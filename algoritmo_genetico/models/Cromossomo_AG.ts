@@ -8,7 +8,7 @@ import { RestricaoProfessorHorarioPorDia_AG } from "./restricoes/RestricaoProfes
 import { RestricaoMateriaSala_AG } from "./restricoes/RestricaoMateriaSala_AG";
 import { RestricaoHorarioPorDiaPeriodo_AG } from "./restricoes/RestricaoHorarioPorDiaPeriodo_AG";
 import { ResultadoCrossOver_AG } from './ResultadoCrossover_AG';
-import { Materia } from '../../interfaces/Materia';
+import { Materia_AG } from './Materia_AG';
 import { ValidacaoQuantidadeAulas } from './ValidacaoQuantidadeAulas_AG';
 
 export class Cromossomo_AG{
@@ -68,7 +68,7 @@ export class Cromossomo_AG{
     posicaoHorario: number,
     posicaoSala: number,
     aulaFilho: Aula_AG,
-    ): void{
+  ): void{
     if (aulaFilho) {
       if (validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.quantidade_aulas >= 
       validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.max_quantidade_aulas
@@ -90,7 +90,7 @@ export class Cromossomo_AG{
   public static crossOverUniforme(
     cromossomo1: Cromossomo_AG, 
     cromossomo2: Cromossomo_AG,
-    materias: Materia[]
+    materias: Materia_AG[]
   ): ResultadoCrossOver_AG {
     const cromossomo1Aux = clone(cromossomo1);
     const cromossomo2Aux = clone(cromossomo2);
@@ -231,8 +231,58 @@ export class Cromossomo_AG{
     return new ResultadoCrossOver_AG(filho1, filho2);
   }
 
-  public mutacao() {
-    
+  public mutacao(restricaoHorarioPorDiaPeriodo: RestricaoHorarioPorDiaPeriodo_AG []) {
+    for (let horario of this.horarios) {
+      if (!horario.aptidaoCorreta && horario.max_qtde_aulas_simultaneas > 1) {
+        let indexSala: number;
+        do {
+          indexSala = Math.floor(Math.random() * horario.salas.length);
+        } while(!horario.salas[indexSala].aula);
+
+        let opcaoMutacao = Math.floor(Math.random() * 2);
+
+        if (opcaoMutacao == 0) {
+          let indexSalaAux:number
+          do {
+            indexSalaAux = Math.floor(Math.random() * horario.salas.length);
+          } while(horario.salas[indexSala].id === horario.salas[indexSalaAux].id);
+
+          let aulaAux = horario.salas[indexSalaAux].aula;
+          horario.salas[indexSalaAux].aula = horario.salas[indexSala].aula;
+          horario.salas[indexSala].aula = aulaAux;
+        } else if (opcaoMutacao == 1) {
+          let indexHorario: number;
+          do {
+            indexHorario = Math.floor(Math.random() * this.horarios.length);
+          } while(this.horarios[indexHorario].id === horario.id ||
+            restricaoHorarioPorDiaPeriodo.findIndex((element) => {
+              if (element.id_periodo === horario.salas[indexSala].aula?.id_periodo) {
+                return true;
+              }
+            }) === -1
+          );
+            
+          let indexSalaAux = Math.floor(Math.random() * this.horarios[indexHorario].salas.length);
+          
+          let aulaAux = this.horarios[indexHorario].salas[indexSalaAux].aula;
+          if (!aulaAux) {
+            let indexSalaAux2:number
+            do {
+              indexSalaAux2 = Math.floor(Math.random() * this.horarios[indexHorario].salas.length);
+            } while(this.horarios[indexHorario].salas[indexSalaAux].id === this.horarios[indexHorario].salas[indexSalaAux2].id ||
+              !this.horarios[indexHorario].salas[indexSalaAux2].aula);
+
+            aulaAux = this.horarios[indexHorario].salas[indexSalaAux2].aula;
+            this.horarios[indexHorario].salas[indexSalaAux2].aula = undefined;
+          }
+
+          this.horarios[indexHorario].salas[indexSalaAux].aula = horario.salas[indexSala].aula;
+          horario.salas[indexSala].aula = aulaAux;
+        }
+      } else {
+        continue;
+      }
+    }
   }
 
   public calcularAptidao(
@@ -241,7 +291,7 @@ export class Cromossomo_AG{
     restricoesMateriaSala: RestricaoMateriaSala_AG [],
     restricoesProfessorHorarioPorDia: RestricaoProfessorHorarioPorDia_AG [],
     logs?: boolean
-    ) {
+  ) {
     this.aptidao = aptidaoInicial;
 
     for (let horario of this.horarios) {
