@@ -1,7 +1,6 @@
 import clone from 'clone';
 
 import { Horario_AG } from "./Horario_AG";
-import { Sala } from "../../interfaces/Sala";
 import { Aula_AG } from "./Aula_AG";
 import { Sala_AG } from "./Sala_AG";
 import { RestricaoSalaHorarioPorDia_AG } from "./restricoes/RestricaoSalaHorarioPorDia_AG";
@@ -11,7 +10,6 @@ import { RestricaoHorarioPorDiaPeriodo_AG } from "./restricoes/RestricaoHorarioP
 import { ResultadoCrossOver_AG } from './ResultadoCrossover_AG';
 import { Materia } from '../../interfaces/Materia';
 import { ValidacaoQuantidadeAulas } from './ValidacaoQuantidadeAulas_AG';
-import { Console } from 'console';
 
 export class Cromossomo_AG{
   public aptidao: number = 0;
@@ -247,6 +245,7 @@ export class Cromossomo_AG{
     this.aptidao = aptidaoInicial;
 
     for (let horario of this.horarios) {
+      horario.aptidaoCorreta = true;
       for (let sala of horario.salas) {
         if (sala.aula) {
 
@@ -262,6 +261,7 @@ export class Cromossomo_AG{
               console.log("Restricao HorarioPorDiaPeriodo - Horario: " + horario.id + " Periodo : " + sala.aula?.id_periodo)
             }
             this.aptidao = this.aptidao - 1;
+            horario.aptidaoCorreta = false;
             continue;
           }
          
@@ -284,6 +284,7 @@ export class Cromossomo_AG{
                 console.log("Restricao  MateriaSala - Materia: " + sala.aula?.id_materia + " Sala : " + sala.id)
               }
               this.aptidao = this.aptidao - 1;
+              horario.aptidaoCorreta = false;
               continue;
             }
           }
@@ -306,6 +307,7 @@ export class Cromossomo_AG{
                 console.log("Restricao ProfessorHorarioPorDia - Professor: " + sala.aula?.id_professor + " Horario : " + horario.id)
               }
               this.aptidao = this.aptidao - 1;
+              horario.aptidaoCorreta = false;
               continue;
             }
           }
@@ -333,6 +335,7 @@ export class Cromossomo_AG{
             }
             
             this.aptidao = this.aptidao - 1;
+            horario.aptidaoCorreta = false;
             continue;
           }
 
@@ -346,10 +349,12 @@ export class Cromossomo_AG{
             }
             
             this.aptidao = this.aptidao - 1;
+            horario.aptidaoCorreta = false;
             continue;
           }
           // Fim Restricao Materias do mesmo periodo no mesmo horario
           this.aptidao = this.aptidao + 1;
+          sala.aptidaoCorreta = true;
         }
       }
     }
