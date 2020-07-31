@@ -1,10 +1,17 @@
 import clone from 'clone';
 
 import { Cromossomo_AG } from "./models/Cromossomo_AG";
+import { RestricaoHorarioPorDiaPeriodo_AG } from './models/restricoes/RestricaoHorarioPorDiaPeriodo_AG';
+import { RestricaoMateriaSala_AG } from './models/restricoes/RestricaoMateriaSala_AG';
+import { RestricaoProfessorHorarioPorDia_AG } from './models/restricoes/RestricaoProfessorHorarioPorDia_AG';
+import { RestricaoSalaHorarioPorDia_AG } from './models/restricoes/RestricaoSalaHorarioPorDia_AG';
+import { Horario_AG } from "./models/Horario_AG";
+import { Sala_AG } from "./models/Sala_AG";
+import { Aula_AG } from "./models/Aula_AG";
+import { ResultadoTorneio_AG } from './models/ResultadoTorneio_AG';
+import { ValidacaoQuantidadeAulas } from './models/ValidacaoQuantidadeAulas_AG';
 
 import { HorarioPorDia } from '../interfaces/HorarioPorDia';
-import { Periodo } from '../interfaces/Periodo';
-import { Professor } from '../interfaces/Professor';
 import { Materia } from '../interfaces/Materia';
 import { Sala } from '../interfaces/Sala';
 import { RestricaoHorarioPorDiaPeriodo } from "../interfaces/restricoes/RestricaoHorarioPorDiaPeriodo";
@@ -12,37 +19,18 @@ import { RestricaoMateriaSala } from "../interfaces/restricoes/RestricaoMateriaS
 import { RestricaoProfessorHorarioPorDia } from "../interfaces/restricoes/RestricaoProfessorHorarioPorDia";
 import { RestricaoSalaHorarioPorDia } from "../interfaces/restricoes/RestricaoSalaHorarioPorDia";
 
-import { RestricaoHorarioPorDiaPeriodo_AG } from './models/restricoes/RestricaoHorarioPorDiaPeriodo_AG';
-import { RestricaoMateriaSala_AG } from './models/restricoes/RestricaoMateriaSala_AG';
-import { RestricaoProfessorHorarioPorDia_AG } from './models/restricoes/RestricaoProfessorHorarioPorDia_AG';
-import { RestricaoSalaHorarioPorDia_AG } from './models/restricoes/RestricaoSalaHorarioPorDia_AG';
-import { Periodo_AG } from "./models/Periodo_AG";
-import { Horario_AG } from "./models/Horario_AG";
-import { Professor_AG } from "./models/Professor_AG";
-import { Sala_AG } from "./models/Sala_AG";
-import { Aula_AG } from "./models/Aula_AG";
-import { ResultadoTorneio_AG } from './models/ResultadoTorneio_AG';
-import { ValidacaoQuantidadeAulas } from './models/ValidacaoQuantidadeAulas_AG';
-
 export class AlgortimoGenetico{
   private dataInicio: Date = new Date;
   
-  private tamanhoPopulacao = 100;
-  private numeroDeGeracoes = 1000;
-
-  private opcaoRoletaOuTorneio = 2;
-  private tamanhoTorneio = 10;
-
-  private taxaCruzamento = 0.8;
-  private taxaMutacao = 0.5;
-
-  private elitismo = true;
-  private tamanhoElitismo = 4;
-
+  private tamanhoPopulacao: number;
+  private numeroGeracoes: number;
+  private tamanhoTorneio: number;
+  private taxaCruzamento: number;
+  private taxaMutacao: number;
+  private elitismo: boolean;
+  private tamanhoElitismo: number;
   private populacao: Cromossomo_AG [] = [];
 
-  private periodos: Periodo_AG [] = [];
-  private professores: Professor_AG [] = [];
   private salas: Sala_AG [] = [];
   private materias: Materia [] = [];
   private aulas: Aula_AG [] = [];
@@ -53,8 +41,13 @@ export class AlgortimoGenetico{
   private restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia_AG [] = [];
 
   constructor(
-    periodos: Periodo [], 
-    professores: Professor [],
+    tamanhoPopulacao: number,
+    numeroGeracoes: number,
+    tamanhoTorneio: number,
+    taxaCruzamento: number,
+    taxaMutacao: number,
+    elitismo: boolean,
+    tamanhoElitismo: number,
     salas: Sala [],
     materias: Materia [],
     horariosPorDia: HorarioPorDia [],
@@ -64,13 +57,13 @@ export class AlgortimoGenetico{
     restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia []
     ) {
       
-      for (let periodo of periodos) {
-        this.periodos.push(new Periodo_AG(periodo.id));
-      }
-      
-      for (let professor of professores) {
-        this.professores.push(new Professor_AG(professor.id));
-      }
+      this.tamanhoPopulacao = tamanhoPopulacao;
+      this.numeroGeracoes = numeroGeracoes;
+      this.tamanhoTorneio = tamanhoTorneio;
+      this.taxaCruzamento = taxaCruzamento;
+      this.taxaMutacao = taxaMutacao;
+      this.elitismo = elitismo;
+      this.tamanhoElitismo = tamanhoElitismo;
 
       for (let sala of salas) {
         this.salas.push(new Sala_AG(sala.id));
@@ -161,7 +154,7 @@ export class AlgortimoGenetico{
   }
 
   public gerarHorario() {
-    for (let i = 0; i < this.numeroDeGeracoes; i = i + 1) {
+    for (let i = 0; i < this.numeroGeracoes; i = i + 1) {
       let filhos: Cromossomo_AG [] = [];
 
       while (filhos.length < this.populacao.length) {
@@ -225,20 +218,10 @@ export class AlgortimoGenetico{
       this.populacao.sort(function(elementA, elementB) {
         return elementB.aptidao - elementA.aptidao;
       })
+
       console.log("GERACAO: "+i)
       console.log("MELHOR GERACAO: "+ this.populacao[0].aptidao)
-      let quantidade = 0;
-
-      for(let horario of this.populacao[0].horarios) {
-        for (let sala of horario.salas) {
-          if (sala.aula) {
-            quantidade = quantidade + 1;
-          }
-        }
-      }
-      console.log("QUANTIDADE AULAS: "+quantidade)
-      console.log("--------------------------------")
-
+      console.log("-------------------------------------------------------------------")
       if (this.populacao[0].aptidao === 150) {
         for (let j = 0; j < this.populacao[0].horarios.length; j = j + 1) {
           console.log("HORARIO: " + this.populacao[0].horarios[j].id)
