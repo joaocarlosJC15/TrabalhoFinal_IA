@@ -1,6 +1,3 @@
-import { Periodo_AG } from './Periodo_AG'
-import { Professor_AG } from './Professor_AG';
-
 export class Aula_AG {
   constructor (
     public id_materia: number, 
