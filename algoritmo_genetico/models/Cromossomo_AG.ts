@@ -11,6 +11,7 @@ import { RestricaoHorarioPorDiaPeriodo_AG } from "./restricoes/RestricaoHorarioP
 import { ResultadoCrossOver_AG } from './ResultadoCrossover_AG';
 import { Materia } from '../../interfaces/Materia';
 import { ValidacaoQuantidadeAulas } from './ValidacaoQuantidadeAulas_AG';
+import { Console } from 'console';
 
 export class Cromossomo_AG{
   public aptidao: number = 0;
@@ -20,72 +21,95 @@ export class Cromossomo_AG{
     horarios: Horario_AG [],
     salas: Sala_AG [], 
     restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia_AG [],
-    aulas?: Aula_AG []
+    aulas: Aula_AG [],
   ) {
-      for (let horario of horarios) {
-        const salasAux: Sala_AG [] = [];
-        for (let sala of salas) {
-          const index = restricoesSalaHorarioPorDia.findIndex(function(element) {
-            if(element.id_sala === sala.id && element.id_horario_por_dia === horario.id) {
-              return true;
-            }
-          });
+    const aulasAux = clone(aulas);
 
-          if (index == -1) {
-            const salaAux = new Sala_AG(sala.id);
-            salasAux.push(salaAux);
+    for (let horario of horarios) {
+      const salasAux: Sala_AG [] = [];
+      for (let sala of salas) {
+        const index = restricoesSalaHorarioPorDia.findIndex(function(element) {
+          if(element.id_sala === sala.id && element.id_horario_por_dia === horario.id) {
+            return true;
           }
-        }
-       
-        let horarioAux = clone(horario);
-        horarioAux.salas = salasAux;
+        });
 
-        if (aulas) {
-          const aulasAux = clone(aulas);
-          while (horarioAux.qtde_aulas_simultaneas < horarioAux.max_qtde_aulas_simultaneas) {
-            let indexSala: number;
-            do {
-              indexSala = Math.floor(Math.random() * horarioAux.salas.length);
-  
-            } while (horarioAux.salas[indexSala].aula);
-  
-            const indexAula = Math.floor(Math.random() * aulasAux.length);
-  
-            horarioAux.salas[indexSala].aula = aulasAux[indexAula];
-  
-            aulasAux.splice(indexAula,1);
-  
-            horarioAux.qtde_aulas_simultaneas = horarioAux.qtde_aulas_simultaneas + 1;
-          }
+        if (index == -1) {
+          const salaAux = new Sala_AG(sala.id);
+          salasAux.push(salaAux);
         }
-
-        this.horarios.push(horarioAux);
       }
-      // for(let horario of this.horarios) {
-      //   console.log("ID horario: " + horario.id)
-      //   console.log("!!")
-      //   for (let sala of horario.salas) {
-      //     console.log("ID SALA: " + sala.id)
-      //     console.log("SALA AULA: "+ sala.aula?.id_materia)
-      //     console.log("AULA PERIODO: "+ sala.aula?.id_periodo)
-      //     console.log("AULA Professor: "+ sala.aula?.id_professor)
-      //     console.log("?????????")
-      //   }
-      //   console.log("-----------------------------------------------------")
-      // }
+      
+      let horarioAux = clone(horario);
+      horarioAux.salas = salasAux;
+
+      while (horarioAux.qtde_aulas_simultaneas < horarioAux.max_qtde_aulas_simultaneas) {
+        let indexSala: number;
+        do {
+          indexSala = Math.floor(Math.random() * horarioAux.salas.length);
+
+        } while (horarioAux.salas[indexSala].aula);
+
+        const indexAula = Math.floor(Math.random() * aulasAux.length);
+
+        horarioAux.salas[indexSala].aula = aulasAux[indexAula];
+        
+        aulasAux.splice(indexAula,1);
+        
+        horarioAux.qtde_aulas_simultaneas = horarioAux.qtde_aulas_simultaneas + 1;
+      
+      }
+    this.horarios.push(horarioAux);
+    }
+  }
+
+  private static modificarSalaAula(
+    filho: Cromossomo_AG, 
+    validaQtdeMateriasFilho: Map<number, ValidacaoQuantidadeAulas>,
+    aulasParaAdicionarOutroFilho: Aula_AG [],
+    posicaoHorario: number,
+    posicaoSala: number,
+    aulaFilho: Aula_AG,
+    ): void{
+    if (aulaFilho) {
+      if (validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.quantidade_aulas >= 
+      validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.max_quantidade_aulas
+      ) {
+        aulasParaAdicionarOutroFilho.push(aulaFilho);
+        filho.horarios[posicaoHorario].salas[posicaoSala].aula = undefined
+      } else {
+        validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.quantidade_aulas = validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.quantidade_aulas + 1;
+        filho.horarios[posicaoHorario].qtde_aulas_simultaneas++
+        
+        filho.horarios[posicaoHorario].salas[posicaoSala].aula = aulaFilho;
+      }
+    }
+    else {
+      filho.horarios[posicaoHorario].salas[posicaoSala].aula = undefined;
+    }
   }
 
   public static crossOverUniforme(
     cromossomo1: Cromossomo_AG, 
-    cromossomo2: Cromossomo_AG
+    cromossomo2: Cromossomo_AG,
+    materias: Materia[]
   ): ResultadoCrossOver_AG {
     const cromossomo1Aux = clone(cromossomo1);
     const cromossomo2Aux = clone(cromossomo2);
-
+    
     const filho1 = clone(cromossomo1);
     const filho2 = clone(cromossomo2);
 
-    
+    const validaQtdeMateriasFilho1: Map<number, ValidacaoQuantidadeAulas> = new Map;
+    const validaQtdeMateriasFilho2: Map<number, ValidacaoQuantidadeAulas> = new Map;
+
+    const aulasParaAdicionarFilho1: Aula_AG [] = [];
+    const aulasParaAdicionarFilho2: Aula_AG [] = [];
+
+    for (let materia of materias) {
+      validaQtdeMateriasFilho1.set(materia.id, new ValidacaoQuantidadeAulas(materia.quantidade_aulas));
+      validaQtdeMateriasFilho2.set(materia.id, new ValidacaoQuantidadeAulas(materia.quantidade_aulas));
+    }
   
     for (let i = 0; i < cromossomo1Aux.horarios.length; i = i + 1) { 
       filho1.horarios[i].qtde_aulas_simultaneas = 0;
@@ -108,54 +132,104 @@ export class Cromossomo_AG{
 
         if (filho1Aula && filho1.horarios[i].qtde_aulas_simultaneas >= filho1.horarios[i].max_qtde_aulas_simultaneas) {
           
-          if (filho2Aula) {
-            filho2.horarios[i].qtde_aulas_simultaneas++
-          }
-          filho2.horarios[i].salas[j].aula = filho2Aula
-          filho1.horarios[i].salas[j].aula = undefined;
-
+          this.modificarSalaAula(
+            filho2,
+            validaQtdeMateriasFilho2,
+            aulasParaAdicionarFilho1,
+            i,
+            j,
+            filho2Aula
+          );
+          
           let index: number;
           do {
             index = Math.floor(Math.random() * filho2.horarios[i].salas.length);
           } while(filho2.horarios[i].salas[index].aula || index >= j);
 
-          if (filho1Aula) {
-            filho2.horarios[i].qtde_aulas_simultaneas++
-          }
-          filho2.horarios[i].salas[index].aula = filho1Aula;
-          
+          this.modificarSalaAula(
+            filho2,
+            validaQtdeMateriasFilho2,
+            aulasParaAdicionarFilho1,
+            i,
+            index,
+            filho1Aula
+          );
+          filho1.horarios[i].salas[j].aula = undefined;
+
         } else if (filho2Aula && filho2.horarios[i].qtde_aulas_simultaneas >= filho2.horarios[i].max_qtde_aulas_simultaneas) {
 
-          if (filho1Aula) {
-            filho1.horarios[i].qtde_aulas_simultaneas++
-          }
-          filho1.horarios[i].salas[j].aula = filho1Aula
-          filho2.horarios[i].salas[j].aula = undefined;
+          this.modificarSalaAula(
+            filho1,
+            validaQtdeMateriasFilho1,
+            aulasParaAdicionarFilho2,
+            i,
+            j,
+            filho1Aula
+          );
           
           let index: number;
           do {
             index = Math.floor(Math.random() * filho1.horarios[i].salas.length);
           } while(filho1.horarios[i].salas[index].aula || index >= j);
 
-          if (filho2Aula) {
-            filho1.horarios[i].qtde_aulas_simultaneas++;
-          }
-          filho1.horarios[i].salas[index].aula = filho2Aula;
+          this.modificarSalaAula(
+            filho1,
+            validaQtdeMateriasFilho1,
+            aulasParaAdicionarFilho2,
+            i,
+            index,
+            filho2Aula
+          );
+          filho2.horarios[i].salas[j].aula = undefined;
 
         } else {
-          filho1.horarios[i].salas[j].aula = filho1Aula;
-          if (filho1Aula) {
-            filho1.horarios[i].qtde_aulas_simultaneas++;
-          }
-  
-          filho2.horarios[i].salas[j].aula = filho2Aula
-          if (filho2Aula) {
-            filho2.horarios[i].qtde_aulas_simultaneas++;
-          }
+          this.modificarSalaAula(
+            filho1,
+            validaQtdeMateriasFilho1,
+            aulasParaAdicionarFilho2,
+            i,
+            j,
+            filho1Aula
+          );
+
+          this.modificarSalaAula(
+            filho2,
+            validaQtdeMateriasFilho2,
+            aulasParaAdicionarFilho1,
+            i,
+            j,
+            filho2Aula
+          );
         }
       }
     }
-    
+
+    for (let horario of filho1.horarios) {
+      while(horario.qtde_aulas_simultaneas < horario.max_qtde_aulas_simultaneas) {
+        let posicaoSala: number;
+        do {
+          
+          posicaoSala = Math.floor(Math.random() * horario.salas.length);
+        } while (horario.salas[posicaoSala].aula);
+        horario.salas[posicaoSala].aula = aulasParaAdicionarFilho1[0];
+        horario.qtde_aulas_simultaneas = horario.qtde_aulas_simultaneas + 1
+
+        aulasParaAdicionarFilho1.splice(0,1);
+      }
+    }
+
+    for (let horario of filho2.horarios) {
+      while(horario.qtde_aulas_simultaneas < horario.max_qtde_aulas_simultaneas) {
+        let posicaoSala: number;
+        do {
+          posicaoSala = Math.floor(Math.random() * horario.salas.length);
+        } while (horario.salas[posicaoSala].aula);
+        horario.salas[posicaoSala].aula = aulasParaAdicionarFilho2[0];
+        horario.qtde_aulas_simultaneas = horario.qtde_aulas_simultaneas + 1
+
+        aulasParaAdicionarFilho2.splice(0,1);
+      }
+    }
     return new ResultadoCrossOver_AG(filho1, filho2);
   }
 

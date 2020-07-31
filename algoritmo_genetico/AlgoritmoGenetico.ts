@@ -22,11 +22,11 @@ import { Professor_AG } from "./models/Professor_AG";
 import { Sala_AG } from "./models/Sala_AG";
 import { Aula_AG } from "./models/Aula_AG";
 import { ResultadoTorneio_AG } from './models/ResultadoTorneio_AG';
+import { ValidacaoQuantidadeAulas } from './models/ValidacaoQuantidadeAulas_AG';
 
 export class AlgortimoGenetico{
-  dataInicio: Date = new Date;
+  private dataInicio: Date = new Date;
   
-
   private tamanhoPopulacao = 100;
   private numeroDeGeracoes = 1000;
 
@@ -44,6 +44,7 @@ export class AlgortimoGenetico{
   private periodos: Periodo_AG [] = [];
   private professores: Professor_AG [] = [];
   private salas: Sala_AG [] = [];
+  private materias: Materia [] = [];
   private aulas: Aula_AG [] = [];
   private horarios: Horario_AG [] = [];
   private restricoesHorarioPorDiaPeriodo: RestricaoHorarioPorDiaPeriodo_AG [] = [];
@@ -75,6 +76,7 @@ export class AlgortimoGenetico{
         this.salas.push(new Sala_AG(sala.id));
       }
       
+      this.materias = clone(materias)
       for (let materia of materias) {
         for (let i = 0; i < materia.quantidade_aulas; i = i + 1) {
           this.aulas.push(new Aula_AG(materia.id, materia.fk_periodo, materia.fk_professor))
@@ -82,7 +84,7 @@ export class AlgortimoGenetico{
       }
       
       for (let horario of horariosPorDia) {
-        this.horarios.push(new Horario_AG(horario.id,2))
+        this.horarios.push(new Horario_AG(horario.id,horario.qtde_aulas_simultaneas))
       }
 
       for (let restricao of restricoesHorarioPorDiaPeriodo) {
@@ -120,9 +122,9 @@ export class AlgortimoGenetico{
     while (this.populacao.length < this.tamanhoPopulacao) {
       const cromossomo = new Cromossomo_AG(
         this.horarios, 
-        this.salas, 
-        this.aulas, 
-        this.restricoesSalaHorarioPorDia
+        this.salas,  
+        this.restricoesSalaHorarioPorDia,
+        this.aulas
       );
       cromossomo.calcularAptidao(
         this.aulas.length*2, 
@@ -130,15 +132,8 @@ export class AlgortimoGenetico{
         this.restricoesMateriaSala, 
         this.restricoesProfessorHorarioPorDia
       );
-        
       this.populacao.push(cromossomo);
     }
-    
-    // teste.calcularAptidao(
-    //   this.aulas.length*2, 
-    //   this.restricoesHorarioPorDiaPeriodo, 
-    //   this.restricoesMateriaSala, 
-    //   this.restricoesProfessorHorarioPorDia)
   }
 
   private torneio(): ResultadoTorneio_AG {
@@ -185,7 +180,8 @@ export class AlgortimoGenetico{
         if (taxaSorteada <= this.taxaCruzamento) {
           const resultadoCrossOver = Cromossomo_AG.crossOverUniforme(
             cromossomo1,
-            cromossomo2
+            cromossomo2,
+            this.materias
           );
           
           resultadoCrossOver.filho1.calcularAptidao(
@@ -229,10 +225,20 @@ export class AlgortimoGenetico{
       this.populacao.sort(function(elementA, elementB) {
         return elementB.aptidao - elementA.aptidao;
       })
-
+      console.log("GERACAO: "+i)
       console.log("MELHOR GERACAO: "+ this.populacao[0].aptidao)
+      let quantidade = 0;
+
+      for(let horario of this.populacao[0].horarios) {
+        for (let sala of horario.salas) {
+          if (sala.aula) {
+            quantidade = quantidade + 1;
+          }
+        }
+      }
+      console.log("QUANTIDADE AULAS: "+quantidade)
       console.log("--------------------------------")
-      
+
       if (this.populacao[0].aptidao === 150) {
         for (let j = 0; j < this.populacao[0].horarios.length; j = j + 1) {
           console.log("HORARIO: " + this.populacao[0].horarios[j].id)
@@ -249,7 +255,6 @@ export class AlgortimoGenetico{
         break;
       }
     }
-
     console.log("DATA INICIO: "+ this.dataInicio);
     console.log("DATA TERMINO: "+ new Date);
   }
