@@ -277,6 +277,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:2,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -284,6 +285,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:2,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -291,6 +293,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:2,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -298,6 +301,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:2,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -305,6 +309,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:2,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -312,6 +317,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:3,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -319,6 +325,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:3,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -326,6 +333,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:3,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -333,6 +341,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:3,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -340,6 +349,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:3,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -347,6 +357,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:4,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -354,6 +365,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:4,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -361,6 +373,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:4,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -368,6 +381,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:4,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -375,6 +389,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:4,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -382,6 +397,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:5,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -389,6 +405,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:5,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -396,6 +413,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:5,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -403,6 +421,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:5,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -410,6 +429,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:5,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -417,6 +437,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:6,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -424,6 +445,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:6,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -431,6 +453,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:6,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -438,6 +461,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:6,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
   {
@@ -445,6 +469,7 @@ const horariosPorDia: HorarioPorDia[] = [
     horario_inicio: new Date,
     horario_termino: new Date,
     fk_dia_semana:6,
+    qtde_aulas_simultaneas: 2,
     fk_grade:1
   },
 ]
