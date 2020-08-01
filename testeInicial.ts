@@ -678,11 +678,165 @@ const restricoresHorarioDiaPeriodo: RestricaoHorarioPorDiaPeriodo [] = [
 ]
 
 const restricoresMateriaSala: RestricaoMateriaSala [] = [
-  
+  {
+    fk_materia: 1,
+    fk_sala: 1
+  },
+  {
+    fk_materia: 2,
+    fk_sala: 1
+  },
+  {
+    fk_materia: 3,
+    fk_sala: 1
+  },
+  {
+    fk_materia: 4,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 5,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 6,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 7,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 8,
+    fk_sala: 3
+  },
+  {
+    fk_materia: 9,
+    fk_sala: 3
+  },
+  {
+    fk_materia: 11,
+    fk_sala: 3
+  },
+  {
+    fk_materia: 15,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 16,
+    fk_sala: 1
+  },
+  {
+    fk_materia: 16,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 12,
+    fk_sala: 1
+  }
 ]
 
 const restricoresProfessorHorarioPorDia: RestricaoProfessorHorarioPorDia [] = [
-  
+  {
+    fk_horario_por_dia: 1,
+    fk_professor: 1,
+  },
+  {
+    fk_horario_por_dia: 6,
+    fk_professor: 1,
+  },
+  {
+    fk_horario_por_dia: 11,
+    fk_professor: 1,
+  },
+  {
+    fk_horario_por_dia: 16,
+    fk_professor: 1,
+  },
+  {
+    fk_horario_por_dia: 21,
+    fk_professor: 1,
+  },
+  {
+    fk_horario_por_dia: 1,
+    fk_professor: 2,
+  },
+  {
+    fk_horario_por_dia: 6,
+    fk_professor: 2,
+  },
+  {
+    fk_horario_por_dia: 11,
+    fk_professor: 2,
+  },
+  {
+    fk_horario_por_dia: 16,
+    fk_professor: 2,
+  },
+  {
+    fk_horario_por_dia: 21,
+    fk_professor: 2,
+  },
+  {
+    fk_horario_por_dia: 1,
+    fk_professor: 3,
+  },
+  {
+    fk_horario_por_dia: 2,
+    fk_professor: 3,
+  },
+  {
+    fk_horario_por_dia: 3,
+    fk_professor: 3,
+  },
+  {
+    fk_horario_por_dia: 4,
+    fk_professor: 3,
+  },
+  {
+    fk_horario_por_dia: 5,
+    fk_professor: 3,
+  },
+  {
+    fk_horario_por_dia: 17,
+    fk_professor: 4,
+  },
+  {
+    fk_horario_por_dia: 18,
+    fk_professor: 4,
+  },
+  {
+    fk_horario_por_dia: 19,
+    fk_professor: 4,
+  },
+  {
+    fk_horario_por_dia: 5,
+    fk_professor: 5,
+  },
+  {
+    fk_horario_por_dia: 6,
+    fk_professor: 5,
+  },
+  {
+    fk_horario_por_dia: 7,
+    fk_professor: 5,
+  },
+  {
+    fk_horario_por_dia: 8,
+    fk_professor: 5,
+  },
+  {
+    fk_horario_por_dia: 5,
+    fk_professor: 6,
+  },
+  {
+    fk_horario_por_dia: 9,
+    fk_professor: 6,
+  },
+  {
+    fk_horario_por_dia: 12,
+    fk_professor: 6,
+  },
 ]
 
 const restricoresSalaHorarioPorDia: RestricaoSalaHorarioPorDia [] = [
@@ -691,21 +845,79 @@ const restricoresSalaHorarioPorDia: RestricaoSalaHorarioPorDia [] = [
     fk_sala: 1
   },
   {
-    fk_horario_por_dia: 6,
+    fk_horario_por_dia: 2,
     fk_sala: 1
-  }
-  ,
+  },
+  {
+    fk_horario_por_dia: 3,
+    fk_sala: 1
+  },
+  {
+    fk_horario_por_dia: 4,
+    fk_sala: 1
+  },
+  {
+    fk_horario_por_dia: 5,
+    fk_sala: 1
+  },
+  {
+    fk_horario_por_dia: 6,
+    fk_sala: 2
+  },
+  {
+    fk_horario_por_dia: 7,
+    fk_sala: 2
+  },
+  {
+    fk_horario_por_dia: 8,
+    fk_sala: 2
+  },
+  {
+    fk_horario_por_dia: 9,
+    fk_sala: 2
+  },
+  {
+    fk_horario_por_dia: 10,
+    fk_sala: 2
+  },
   {
     fk_horario_por_dia: 11,
+    fk_sala: 3
+  },
+  {
+    fk_horario_por_dia: 12,
+    fk_sala: 3
+  },
+  {
+    fk_horario_por_dia: 13,
+    fk_sala: 3
+  },
+  {
+    fk_horario_por_dia: 14,
+    fk_sala: 3
+  },
+  {
+    fk_horario_por_dia: 15,
+    fk_sala: 3
+  },
+  {
+    fk_horario_por_dia: 16,
     fk_sala: 1
-  }
+  },
+  {
+    fk_horario_por_dia: 17,
+    fk_sala: 1
+  },
 ]
 
-
-
 const algoritmoGenetico = new AlgortimoGenetico(
-  periodos,
-  professores,
+  20,
+  1000,
+  5,
+  0.8,
+  0.5,
+  true,
+  2,
   salas,
   materias,
   horariosPorDia,
