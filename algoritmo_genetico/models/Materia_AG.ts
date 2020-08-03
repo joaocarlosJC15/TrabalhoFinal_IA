@@ -9,6 +9,5 @@ export class Materia_AG {
     this.quantidade_aulas = quantidade_aulas;
     this.id_periodo = id_periodo;
     this.id_professor = id_professor;
-    
   }
 }
