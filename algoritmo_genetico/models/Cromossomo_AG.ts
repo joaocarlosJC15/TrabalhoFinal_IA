@@ -63,9 +63,10 @@ export class Cromossomo_AG{
     }
   }
 
-  private static modificarSalaAula(
+  private static acrescentarAulaSala(
     filho: Cromossomo_AG, 
     validaQtdeMateriasFilho: Map<number, ValidacaoQuantidadeAulas>,
+    aulasParaAdicionarFilho: Aula_AG [],
     aulasParaAdicionarOutroFilho: Aula_AG [],
     posicaoHorario: number,
     posicaoSala: number,
@@ -76,7 +77,15 @@ export class Cromossomo_AG{
       validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.max_quantidade_aulas
       ) {
         aulasParaAdicionarOutroFilho.push(aulaFilho);
-        filho.horarios[posicaoHorario].salas[posicaoSala].aula = undefined
+        if (aulasParaAdicionarFilho.length) {
+          filho.horarios[posicaoHorario].salas[posicaoSala].aula = aulasParaAdicionarFilho[0];
+          filho.horarios[posicaoHorario].qtde_aulas_simultaneas++;
+
+          aulasParaAdicionarFilho.splice(0,1);
+        } else {
+          filho.horarios[posicaoHorario].salas[posicaoSala].aula = undefined;
+        }
+        
       } else {
         validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.quantidade_aulas = validaQtdeMateriasFilho.get(aulaFilho.id_materia)!.quantidade_aulas + 1;
         filho.horarios[posicaoHorario].qtde_aulas_simultaneas++
@@ -132,9 +141,10 @@ export class Cromossomo_AG{
 
         if (filho1Aula && filho1.horarios[i].qtde_aulas_simultaneas >= filho1.horarios[i].max_qtde_aulas_simultaneas) {
           
-          this.modificarSalaAula(
+          this.acrescentarAulaSala(
             filho2,
             validaQtdeMateriasFilho2,
+            aulasParaAdicionarFilho2,
             aulasParaAdicionarFilho1,
             i,
             j,
@@ -146,9 +156,10 @@ export class Cromossomo_AG{
               index = Math.floor(Math.random() * filho2.horarios[i].salas.length);
           } while(filho2.horarios[i].salas[index].aula || index >= j);
           
-          this.modificarSalaAula(
+          this.acrescentarAulaSala(
             filho2,
             validaQtdeMateriasFilho2,
+            aulasParaAdicionarFilho2,
             aulasParaAdicionarFilho1,
             i,
             index,
@@ -158,9 +169,10 @@ export class Cromossomo_AG{
 
         } else if (filho2Aula && filho2.horarios[i].qtde_aulas_simultaneas >= filho2.horarios[i].max_qtde_aulas_simultaneas) {
 
-          this.modificarSalaAula(
+          this.acrescentarAulaSala(
             filho1,
             validaQtdeMateriasFilho1,
+            aulasParaAdicionarFilho1,
             aulasParaAdicionarFilho2,
             i,
             j,
@@ -172,9 +184,10 @@ export class Cromossomo_AG{
               index = Math.floor(Math.random() * filho1.horarios[i].salas.length);
           } while(filho1.horarios[i].salas[index].aula || index >= j);
        
-          this.modificarSalaAula(
+          this.acrescentarAulaSala(
             filho1,
             validaQtdeMateriasFilho1,
+            aulasParaAdicionarFilho1,
             aulasParaAdicionarFilho2,
             i,
             index,
@@ -183,18 +196,20 @@ export class Cromossomo_AG{
           filho2.horarios[i].salas[j].aula = undefined;
 
         } else {
-          this.modificarSalaAula(
+          this.acrescentarAulaSala(
             filho1,
             validaQtdeMateriasFilho1,
+            aulasParaAdicionarFilho1,
             aulasParaAdicionarFilho2,
             i,
             j,
             filho1Aula
           );
 
-          this.modificarSalaAula(
+          this.acrescentarAulaSala(
             filho2,
             validaQtdeMateriasFilho2,
+            aulasParaAdicionarFilho2,
             aulasParaAdicionarFilho1,
             i,
             j,
