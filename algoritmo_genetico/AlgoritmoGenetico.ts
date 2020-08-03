@@ -10,7 +10,6 @@ import { Sala_AG } from "./models/Sala_AG";
 import { Materia_AG } from "./models/Materia_AG";
 import { Aula_AG } from "./models/Aula_AG";
 import { ResultadoTorneio_AG } from './models/ResultadoTorneio_AG';
-import { ValidacaoQuantidadeAulas } from './models/ValidacaoQuantidadeAulas_AG';
 
 import { HorarioPorDia } from '../interfaces/HorarioPorDia';
 import { Materia } from '../interfaces/Materia';
@@ -34,7 +33,8 @@ export class AlgortimoGenetico{
 
   private salas: Sala_AG [] = [];
   private materias: Materia_AG [] = [];
-  private aulas: Aula_AG [] = [];
+  private aulas: Map<number, Aula_AG []> = new Map;
+  private qtdeAulas: number = 0;
   private horarios: Horario_AG [] = [];
   private restricoesHorarioPorDiaPeriodo: RestricaoHorarioPorDiaPeriodo_AG [] = [];
   private restricoesMateriaSala: RestricaoMateriaSala_AG [] = [];
@@ -69,17 +69,6 @@ export class AlgortimoGenetico{
       for (let sala of salas) {
         this.salas.push(new Sala_AG(sala.id));
       }
-      
-      for (let materia of materias) {
-        this.materias.push(new Materia_AG(materia.id, materia.quantidade_aulas, materia.fk_periodo, materia.fk_professor))
-        for (let i = 0; i < materia.quantidade_aulas; i = i + 1) {
-          this.aulas.push(new Aula_AG(materia.id, materia.fk_periodo, materia.fk_professor))
-        }
-      }
-      
-      for (let horario of horariosPorDia) {
-        this.horarios.push(new Horario_AG(horario.id,horario.qtde_aulas_simultaneas))
-      }
 
       for (let restricao of restricoesHorarioPorDiaPeriodo) {
         this.restricoesHorarioPorDiaPeriodo.push(new RestricaoHorarioPorDiaPeriodo_AG(
@@ -88,11 +77,60 @@ export class AlgortimoGenetico{
         )
       }
 
+      const restricoesHorarioPorDiaPeriodoAux = clone(this.restricoesHorarioPorDiaPeriodo);
+      for (let horario of horariosPorDia) {
+        const restricoes: number[] = [];
+
+        for (let i = 0; i < restricoesHorarioPorDiaPeriodoAux.length; i = i + 1) {
+          if (restricoesHorarioPorDiaPeriodoAux[i].id_horario === horario.id) {
+            restricoes.push(restricoesHorarioPorDiaPeriodoAux[i].id_periodo);
+            restricoesHorarioPorDiaPeriodoAux.splice(i,1);
+            i = i - 1;
+          }
+        }
+        
+        this.horarios.push(new Horario_AG(horario.id,horario.qtde_aulas_simultaneas, restricoes))
+      }
+
       for (let restricao of restricoesMateriaSala) {
         this.restricoesMateriaSala.push(new RestricaoMateriaSala_AG(
           restricao.fk_materia,
           restricao.fk_sala)
         )
+      }
+
+      const restricoesMateriaSalaAux = clone(restricoesMateriaSala);
+      for (let materia of materias) {
+        this.materias.push(new Materia_AG(materia.id, materia.quantidade_aulas, materia.fk_periodo, materia.fk_professor))
+
+        const restricoesSala: number[] = [];
+        for (let i = 0; i < restricoesMateriaSalaAux.length; i = i + 1) {
+          if (restricoesMateriaSalaAux[i].fk_materia === materia.id) {
+            restricoesSala.push(restricoesMateriaSalaAux[i].fk_sala);
+            restricoesMateriaSalaAux.splice(i,1);
+            i = i - 1;
+          }
+        }
+
+        const restricoesHorarioProfessor: number[] = [];
+        for (let i = 0; i < restricoesProfessorHorarioPorDia.length; i = i + 1) {
+          if (restricoesProfessorHorarioPorDia[i].fk_professor === materia.fk_professor) {
+            restricoesHorarioProfessor.push(restricoesProfessorHorarioPorDia[i].fk_horario_por_dia);
+          }
+        }
+        
+        const aulasAux: Aula_AG [] = [];
+        for (let i = 0; i < materia.quantidade_aulas; i = i + 1) {
+          aulasAux.push(new Aula_AG(materia.id, materia.fk_periodo, materia.fk_professor, restricoesSala, restricoesHorarioProfessor))
+          this.qtdeAulas = this.qtdeAulas + 1;
+        }
+
+        let aulasPorPeriodo = this.aulas.get(materia.fk_periodo);
+        if (!aulasPorPeriodo) {
+          aulasPorPeriodo = []
+        }
+
+        this.aulas.set(materia.fk_periodo, aulasPorPeriodo.concat(aulasAux))
       }
 
       for (let restricao of restricoesProfessorHorarioPorDia) {
@@ -108,6 +146,7 @@ export class AlgortimoGenetico{
           restricao.fk_horario_por_dia)
         )
       }
+     
       this.gerarPopulacaoInicial();
       this.gerarHorario();
   }
@@ -121,12 +160,8 @@ export class AlgortimoGenetico{
         this.aulas
       );
       cromossomo.calcularAptidao(
-        this.aulas.length*2, 
-        this.restricoesHorarioPorDiaPeriodo, 
-        this.restricoesMateriaSala, 
-        this.restricoesProfessorHorarioPorDia
+        this.qtdeAulas*2
       );
-      
       this.populacao.push(cromossomo);
     }
   }
@@ -193,17 +228,11 @@ export class AlgortimoGenetico{
           filho2 = resultadoCrossOver.filho2;
           
           filho1.calcularAptidao(
-            this.aulas.length*2, 
-            this.restricoesHorarioPorDiaPeriodo, 
-            this.restricoesMateriaSala, 
-            this.restricoesProfessorHorarioPorDia
+            this.qtdeAulas*2
           );
 
           filho2.calcularAptidao(
-            this.aulas.length*2, 
-            this.restricoesHorarioPorDiaPeriodo, 
-            this.restricoesMateriaSala, 
-            this.restricoesProfessorHorarioPorDia
+            this.qtdeAulas*2
           );
         } else {
           filho1 = cromossomo1;
@@ -211,24 +240,18 @@ export class AlgortimoGenetico{
         }
 
         if (Math.random() < this.taxaMutacao) {
-          filho1.mutacao(this.restricoesHorarioPorDiaPeriodo);
+          filho1.mutacao();
         }
         if (Math.random() < this.taxaMutacao) {
-          filho2.mutacao(this.restricoesHorarioPorDiaPeriodo);
+          filho2.mutacao();
         }
         
         filho1.calcularAptidao(
-          this.aulas.length*2, 
-          this.restricoesHorarioPorDiaPeriodo, 
-          this.restricoesMateriaSala, 
-          this.restricoesProfessorHorarioPorDia
+          this.qtdeAulas*2
         );
 
         filho2.calcularAptidao(
-          this.aulas.length*2, 
-          this.restricoesHorarioPorDiaPeriodo, 
-          this.restricoesMateriaSala, 
-          this.restricoesProfessorHorarioPorDia
+          this.qtdeAulas*2
         );
 
         if ((filhos.length - this.populacao.length) >= 2) {
@@ -253,32 +276,14 @@ export class AlgortimoGenetico{
       })
 
       console.log("GERACAO: "+i)
-      this.populacao[0].calcularAptidao(
-        this.aulas.length*2, 
-        this.restricoesHorarioPorDiaPeriodo, 
-        this.restricoesMateriaSala, 
-        this.restricoesProfessorHorarioPorDia,
-        true
-      );
       console.log("MELHOR GERACAO: "+ this.populacao[0].aptidao)
-      console.log("PROCENTAGEM: "+this.populacao[0].aptidao/(this.aulas.length*3)+"%")
+      console.log("PORCENTAGEM: "+this.populacao[0].aptidao/(this.qtdeAulas*3)+"%")
       console.log("-------------------------------------------------------------------")
-      if (this.populacao[0].aptidao === 150) {
-        for (let j = 0; j < this.populacao[0].horarios.length; j = j + 1) {
-          console.log("HORARIO: " + this.populacao[0].horarios[j].id)
-          console.log("$$$$$")
-          for (let k = 0; k < this.populacao[0].horarios[j].salas.length; k = k + 1) {
-            console.log("SALA: " + this.populacao[0].horarios[j].salas[k].id)
-            console.log("!!!!!!!!")
-            console.log("MATERIA: " +this.populacao[0].horarios[j].salas[k].aula?.id_materia)
-            console.log("PROFESSOR: "+ this.populacao[0].horarios[j].salas[k].aula?.id_professor)
-            console.log("PERIODO: "+this.populacao[0].horarios[j].salas[k].aula?.id_periodo)
-          }
-          console.log("----------------------------------------------------------------")
-        }
+      if (this.populacao[0].aptidao === this.qtdeAulas*3) {
         break;
       }
     }
+
     console.log("DATA INICIO: "+ this.dataInicio);
     console.log("DATA TERMINO: "+ new Date);
   }
