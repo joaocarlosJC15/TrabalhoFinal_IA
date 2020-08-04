@@ -146,7 +146,7 @@ export class AlgortimoGenetico{
           restricao.fk_horario_por_dia)
         )
       }
-     
+      
       this.gerarPopulacaoInicial();
       this.gerarHorario();
   }
@@ -194,7 +194,7 @@ export class AlgortimoGenetico{
     this.populacao.sort(function(elementA, elementB) {
       return elementB.aptidao - elementA.aptidao;
     })
-
+    let z = 0;
     for (let i = 0; i < this.numeroGeracoes; i = i + 1) {
       let filhos: Cromossomo_AG [] = [];
 
@@ -202,6 +202,16 @@ export class AlgortimoGenetico{
         for (let i = 0; i < this.tamanhoElitismo; i = i + 1) {
           filhos.push(this.populacao[i])
         }
+      }
+
+      const melhorCromossomo = clone(this.populacao[0]);
+      melhorCromossomo.mutacao();
+      melhorCromossomo.calcularAptidao(
+        this.qtdeAulas*2
+      );
+      if (melhorCromossomo.aptidao > this.populacao[0].aptidao) {
+        z = z + 1;
+        this.populacao[0] = melhorCromossomo;
       }
 
       while (filhos.length < this.populacao.length) {
@@ -235,8 +245,8 @@ export class AlgortimoGenetico{
             this.qtdeAulas*2
           );
         } else {
-          filho1 = cromossomo1;
-          filho2 = cromossomo2;
+          filho1 = clone(cromossomo1);
+          filho2 = clone(cromossomo2);
         }
 
         if (Math.random() < this.taxaMutacao) {
@@ -277,7 +287,8 @@ export class AlgortimoGenetico{
 
       console.log("GERACAO: "+i)
       console.log("MELHOR GERACAO: "+ this.populacao[0].aptidao)
-      console.log("PORCENTAGEM: "+this.populacao[0].aptidao/(this.qtdeAulas*3)+"%")
+      console.log("AJUDA: "+z)
+      console.log("PORCENTAGEM: "+((this.populacao[0].aptidao/(this.qtdeAulas*3))*100)+"%")
       console.log("-------------------------------------------------------------------")
       if (this.populacao[0].aptidao === this.qtdeAulas*3) {
         break;
