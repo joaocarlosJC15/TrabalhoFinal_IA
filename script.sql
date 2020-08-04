@@ -106,13 +106,28 @@ CREATE TABLE restricoes_professores_horarios_por_dia (
 	FOREIGN KEY (fk_horario_por_dia) REFERENCES horarios_por_dia(id)
 );
 
+CREATE TABLE resultados_algoritmo_genetico (
+	id int2,
+	fk_grade int2 NOT NULL,
+	tamanho_populacao int2 NOT NULL,
+	numero_geracoes_necessario int2 NOT NULL,
+	tamanho_torneio int2 NOT NULL,
+	taxa_cruzamento numeric(7,4) NOT NULL,
+	taxa_mutacao numeric(7,4) NOT NULL,
+	elitismo boolean NOT NULL,
+	tamanho_elitismo int2 NULL,
+	data_inicio timestamptz NOT NULL,
+	data_termino timestamptz NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (fk_grade) REFERENCES grades(id)
+);
 
 CREATE TABLE horarios_gerados (
-	fk_grade int2 NOT NULL,
+	fk_resultado_algoritmo_genetico int2 NOT NULL,
 	fk_horario_por_dia int2 NOT NULL,
 	fk_sala int2 NOT NULL,
 	fk_materia int2 NOT NULL,
-	FOREIGN KEY (fk_grade) REFERENCES grades(id),
+	FOREIGN KEY (fk_resultado_algoritmo_genetico) REFERENCES resultados_algoritmo_genetico(id),
 	FOREIGN KEY (fk_horario_por_dia) REFERENCES horarios_por_dia(id),
 	FOREIGN KEY (fk_sala) REFERENCES salas(id),
 	FOREIGN KEY (fk_materia) REFERENCES materias(id)
