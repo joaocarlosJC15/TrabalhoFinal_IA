@@ -47,9 +47,13 @@ export class Cromossomo_AG{
 
         let indexPeriodo: number
         do {
-          indexPeriodo =  horario.restricoesHorarioPeriodos[Math.floor(Math.random() * horario.restricoesHorarioPeriodos.length)];
-        } while(aulasAux.get(indexPeriodo)?.length === 0)
-
+          indexPeriodo =  horarioAux.restricoesHorarioPeriodos[Math.floor(Math.random() * horarioAux.restricoesHorarioPeriodos.length)];
+        } while(aulasAux.get(indexPeriodo)?.length === 0 || horarioAux.salas.findIndex(function(element) {
+          if (element.aula && element.aula.id_periodo === indexPeriodo) {
+            return true;
+          }
+        }) !== -1)
+        
         let indexAula = Math.floor(Math.random() * aulasAux.get(indexPeriodo)!.length);
         
         horarioAux.salas[indexSala].aula = aulasAux.get(indexPeriodo)![indexAula];
@@ -323,7 +327,6 @@ export class Cromossomo_AG{
           let indexSalaAux: number;
           if (horario.salas[indexSala].aula!.restricoesSala.length > 0) {
             let indexSalaAleatorio: number
-
             do {
               indexSalaAleatorio =  horario.salas[indexSala].aula!.restricoesSala[Math.floor(Math.random() * horario.salas[indexSala].aula!.restricoesSala.length)];
               indexSalaAux = this.horarios[indexHorario].salas.findIndex(function(element) {
