@@ -116,6 +116,7 @@ CREATE TABLE resultados_algoritmo_genetico (
 	taxa_mutacao numeric(7,4) NOT NULL,
 	elitismo boolean NOT NULL,
 	tamanho_elitismo int2 NULL,
+	aptidao numeric(7,4) NOT NULL,
 	data_inicio timestamptz NOT NULL,
 	data_termino timestamptz NOT NULL,
 	PRIMARY KEY (id),
