@@ -18,6 +18,8 @@ import { RestricaoHorarioPorDiaPeriodo } from "../interfaces/restricoes/Restrica
 import { RestricaoMateriaSala } from "../interfaces/restricoes/RestricaoMateriaSala";
 import { RestricaoProfessorHorarioPorDia } from "../interfaces/restricoes/RestricaoProfessorHorarioPorDia";
 import { RestricaoSalaHorarioPorDia } from "../interfaces/restricoes/RestricaoSalaHorarioPorDia";
+import { AddResultadosAlgortimoGenetico } from '../interfaces/ResultadosAlgortimoGenetico';
+import { HorarioGerado } from '../interfaces/HorarioGerado';
 
 export class AlgortimoGenetico{
   private dataInicio: Date = new Date;
@@ -30,6 +32,9 @@ export class AlgortimoGenetico{
   private elitismo: boolean;
   private tamanhoElitismo: number;
   private populacao: Cromossomo_AG [] = [];
+
+  private numeroGeracoesExecutadas: number = 0;
+  private id_grade: number;
 
   private salas: Sala_AG [] = [];
   private materias: Materia_AG [] = [];
@@ -55,7 +60,8 @@ export class AlgortimoGenetico{
     restricoesHorarioPorDiaPeriodo: RestricaoHorarioPorDiaPeriodo [],
     restricoesMateriaSala: RestricaoMateriaSala [],
     restricoesProfessorHorarioPorDia: RestricaoProfessorHorarioPorDia [],
-    restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia []
+    restricoesSalaHorarioPorDia: RestricaoSalaHorarioPorDia [],
+    id_grade: number
     ) {
       
       this.tamanhoPopulacao = tamanhoPopulacao;
@@ -65,6 +71,8 @@ export class AlgortimoGenetico{
       this.taxaMutacao = taxaMutacao;
       this.elitismo = elitismo;
       this.tamanhoElitismo = tamanhoElitismo;
+
+      this.id_grade = id_grade;
 
       for (let sala of salas) {
         this.salas.push(new Sala_AG(sala.id));
@@ -148,7 +156,6 @@ export class AlgortimoGenetico{
       }
       
       this.gerarPopulacaoInicial();
-      this.gerarHorario();
   }
 
   private gerarPopulacaoInicial() {
@@ -190,12 +197,15 @@ export class AlgortimoGenetico{
     return new ResultadoTorneio_AG(participantesTorneio[0], participantesTorneio[1]);
   }
 
-  public gerarHorario() {
+  public gerarHorario(): AddResultadosAlgortimoGenetico {
     this.populacao.sort(function(elementA, elementB) {
       return elementB.aptidao - elementA.aptidao;
     })
     let z = 0;
-    for (let i = 0; i < this.numeroGeracoes; i = i + 1) {
+    for (this.numeroGeracoesExecutadas = 0; 
+      this.numeroGeracoesExecutadas < this.numeroGeracoes; 
+      this.numeroGeracoesExecutadas = this.numeroGeracoesExecutadas + 1
+    ) {
       let filhos: Cromossomo_AG [] = [];
 
       const melhorCromossomo = clone(this.populacao[0]);
@@ -284,12 +294,13 @@ export class AlgortimoGenetico{
       this.populacao.sort(function(elementA, elementB) {
         return elementB.aptidao - elementA.aptidao;
       })
-
-      console.log("GERACAO: "+i)
+      
+      console.log("GERACAO: "+this.numeroGeracoesExecutadas)
       console.log("MELHOR GERACAO: "+ this.populacao[0].aptidao)
       console.log("AJUDA: "+z)
       console.log("PORCENTAGEM: "+((this.populacao[0].aptidao/(this.qtdeAulas*3))*100)+"%")
       console.log("-------------------------------------------------------------------")
+
       if (this.populacao[0].aptidao === this.qtdeAulas*3) {
         break;
       }
@@ -297,5 +308,34 @@ export class AlgortimoGenetico{
 
     console.log("DATA INICIO: "+ this.dataInicio);
     console.log("DATA TERMINO: "+ new Date);
+
+    const horarios: HorarioGerado[] = [];
+    for (const horario of this.populacao[0].horarios) {
+      for (const sala of horario.salas) {
+        if (sala.aula) {
+          horarios.push({
+            fk_grade: this.id_grade,
+            fk_horario_por_dia: horario.id,
+            fk_sala: sala.id,
+            fk_materia: sala.aula!.id_materia
+          });
+        }
+      }
+    }
+
+    return {
+      fk_grade: this.id_grade,
+      tamanho_populacao: this.tamanhoPopulacao,
+      numero_geracoes_necessario: this.numeroGeracoesExecutadas,
+      tamanho_torneio: this.tamanhoTorneio,
+      taxa_cruzamento: this.taxaCruzamento,
+      taxa_mutacao: this.taxaMutacao,
+      elitismo: this.elitismo,
+      tamanho_elitismo: this.tamanhoElitismo,
+      aptidao: this.populacao[0].aptidao,
+      data_inicio: this.dataInicio,
+      data_termino: new Date,
+      horarioGerado: horarios
+    }
   }
 }
