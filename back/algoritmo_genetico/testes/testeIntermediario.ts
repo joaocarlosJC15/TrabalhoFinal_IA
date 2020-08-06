@@ -1598,13 +1598,13 @@ const restricoresSalaHorarioPorDia: RestricaoSalaHorarioPorDia [] = [
 ]
 
 const algoritmoGenetico = new AlgortimoGenetico(
-  30,
+  28,
   100000,
-  6,
+  4,
   0.7,
-  0.8,
+  0.9,
   true,
-  6,
+  4,
   salas,
   materias,
   horariosPorDia,

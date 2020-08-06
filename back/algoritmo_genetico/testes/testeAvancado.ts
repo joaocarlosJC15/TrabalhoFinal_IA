@@ -1492,8 +1492,28 @@ const restricoresMateriaSala: RestricaoMateriaSala [] = [
     fk_sala: 1
   },
   {
+    fk_materia: 17,
+    fk_sala: 1
+  },
+  {
+    fk_materia: 27,
+    fk_sala: 1
+  },
+  {
+    fk_materia: 28,
+    fk_sala: 1
+  },
+  {
     fk_materia: 19,
     fk_sala: 4
+  },
+  {
+    fk_materia: 26,
+    fk_sala: 2
+  },
+  {
+    fk_materia: 20,
+    fk_sala: 2
   },
   {
     fk_materia: 23,
@@ -1506,7 +1526,15 @@ const restricoresMateriaSala: RestricaoMateriaSala [] = [
   {
     fk_materia: 27,
     fk_sala: 3
-  }
+  },
+  {
+    fk_materia: 30,
+    fk_sala: 4
+  },
+  {
+    fk_materia: 21,
+    fk_sala: 4
+  },
 ]
 
 const restricoresProfessorHorarioPorDia: RestricaoProfessorHorarioPorDia [] = [
@@ -1772,11 +1800,11 @@ const restricoresSalaHorarioPorDia: RestricaoSalaHorarioPorDia [] = [
 ]
 
 const algoritmoGenetico = new AlgortimoGenetico(
-  25,
+  28,
   100000,
   4,
-  0.6,
-  0.9,
+  0.67,
+  0.8,
   true,
   4,
   salas,
