@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "sucrase-node ./algoritmo_genetico/testes/testeAvancado.ts"
+   
   },
   "repository": "https://github.com/joaocarlosJC15/TrabalhoFinal_IA.git",
   "author": "João Carlos Alvim <jc15joaocarlos@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@types/clone": "^0.1.30",
-    "@types/node": "^14.0.26",
-    "clone": "^2.1.2"
+    "clone": "^2.1.2",
+    "knex": "^0.21.2",
+    "pg": "^8.3.0"
   },
   "devDependencies": {
+    "@types/clone": "^0.1.30",
+    "@types/node": "^14.0.27",
     "sucrase": "^3.15.0",
     "typescript": "^3.9.7"
   }
