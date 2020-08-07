@@ -1,5 +1,5 @@
 import { Controller } from "../../../../presentation/protocols";
-import { AddGradeController } from "../../../../presentation/controllers/grade/add-grade/add-grade-controller";
+import { AddGradeController } from "../../../../presentation/controllers/grade/add/add-grade-controller";
 
 import { AddGradeUseCase } from "../../../../domain/usecases/grade/add/add-grade-usecase";
 
