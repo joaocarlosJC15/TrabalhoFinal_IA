@@ -2,7 +2,7 @@ import { AddGrade, AddGradeEntity } from "./add-grade";
 import { Grade } from "../../../entities/grade";
 import { AddGradeRepository } from "../../../protocols/database/grade/add-grade-repository";
 
-export class AddGradeUsecase implements AddGrade {
+export class AddGradeUseCase implements AddGrade {
   constructor(
     private readonly addGradeRepository: AddGradeRepository
   ) {

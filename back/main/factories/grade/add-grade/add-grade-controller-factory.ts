@@ -1,11 +1,12 @@
 import { Controller } from "../../../../presentation/protocols";
 import { AddGradeController } from "../../../../presentation/controllers/grade/add-grade/add-grade-controller";
-import { GradeRepository } from "../../../../data/database/postgres/grade/grade-repository";
 
-import { AddGradeUsecase } from "../../../../domain/usecases/grade/add/add-grade-usecase";
+import { AddGradeUseCase } from "../../../../domain/usecases/grade/add/add-grade-usecase";
+
+import { GradeRepository } from "../../../../data/database/postgres/grade/grade-repository";
 
 export const makeAddGradeController = (): Controller => {
   const gradeRepository = new GradeRepository();
-  const addGradeUseCase = new AddGradeUsecase(gradeRepository);
+  const addGradeUseCase = new AddGradeUseCase(gradeRepository);
   return new AddGradeController(addGradeUseCase);
 }
