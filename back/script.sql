@@ -1,28 +1,18 @@
-CREATE TABLE usuarios (
-	id int2 NULL,
+CREATE TABLE grades ( 
+	id serial,
 	nome varchar(100) NOT NULL,
-	email varchar(100) NOT NULL,
-	senha varchar(100) NOT NULL,
+	descricao text,
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE grades ( 
-	id int2 NULL,
-	fk_usuario int2 NOT NULL,
-	nome varchar(100) NOT NULL,
-	descricao text,
-	PRIMARY KEY (id),
-	FOREIGN KEY (fk_usuario) REFERENCES usuarios(id)
-);
-
 CREATE TABLE dias_semana (
-	id int2 NULL,
+	id serial,
 	nome varchar(100) NOT NULL,
 	PRIMARY KEY (id)
 );
 
 CREATE TABLE salas (
-	id int2,
+	id serial,
 	fk_grade int2 NOT NULL,
 	nome varchar(100) NOT NULL,
 	descricao text,
@@ -32,7 +22,7 @@ CREATE TABLE salas (
 
 
 CREATE TABLE professores (
-	id int2,
+	id serial,
 	fk_grade int2 NOT NULL,
 	nome varchar(100) NOT NULL,
 	descricao text,
@@ -44,7 +34,7 @@ CREATE TABLE professores (
 
 
 CREATE TABLE periodos (
-	id int2,
+	id serial,
 	fk_grade int2 NOT NULL,
 	nome varchar(100) NOT NULL,
 	descricao text,
@@ -53,7 +43,7 @@ CREATE TABLE periodos (
 );
 
 CREATE TABLE horarios_por_dia (
-	id int2,
+	id serial,
 	fk_grade int2 NOT NULL,
 	fk_dia_semana int2 NOT NULL,
 	horario_inicio timetz NOT NULL,
@@ -64,7 +54,7 @@ CREATE TABLE horarios_por_dia (
 );
 
 CREATE TABLE materias (
-	id int2,
+	id serial,
 	fk_grade int2 NOT NULL,
 	fk_professor int2 NOT NULL,
 	fk_periodo int2 NOT NULL,
@@ -107,7 +97,7 @@ CREATE TABLE restricoes_professores_horarios_por_dia (
 );
 
 CREATE TABLE resultados_algoritmo_genetico (
-	id int2,
+	id serial,
 	fk_grade int2 NOT NULL,
 	tamanho_populacao int2 NOT NULL,
 	numero_geracoes_necessario int2 NOT NULL,
