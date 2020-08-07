@@ -11,6 +11,22 @@ export class SalaRepository implements AddSalaRepository {
     return data && this.salaSerializer(data[0]);
   }
 
+  async list(): Promise<Sala []> {
+    const data = await connection.select(
+      'id',
+      'nome',
+      'descricao'
+    ).from('salas');
+
+    const salas= [];
+
+    for (let sala of data) {
+      salas.push(this.salaSerializer(sala));
+    }
+
+    return data;
+  }
+
   salaSerializer(data: any): Sala {
     return {
       id: data.id,

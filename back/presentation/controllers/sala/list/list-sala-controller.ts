@@ -1,21 +1,21 @@
-import { ListGrade } from "../../../../domain/usecases/grade/list/list-grade";
+import { ListSala } from "../../../../domain/usecases/sala/list/list-sala";
 
 import { Controller } from "../../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../../protocols/http";
 import { ok, serverError } from "../../../helpers/http";
 
-export class ListGradeController implements Controller {
+export class ListSalaController implements Controller {
   constructor (
-    private readonly listGrade: ListGrade
+    private readonly listSala: ListSala
   ) {
-    this.listGrade = listGrade;
+    this.listSala = listSala;
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const grades = await this.listGrade.list();
+      const salas = await this.listSala.list();
 
-      return ok(grades);
+      return ok(salas);
     } catch (error) {
       return serverError(error);
     }
