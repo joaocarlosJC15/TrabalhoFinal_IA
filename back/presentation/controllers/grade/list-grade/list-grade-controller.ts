@@ -15,9 +15,9 @@ export class ListGradeController implements Controller {
     try {
       const { nome, descricao } = httpRequest.body;
 
-      const grade = await this.listGrade.list();
+      const grades = await this.listGrade.list();
 
-      return ok(grade);
+      return ok(grades);
     } catch (error) {
       return serverError(error);
     }

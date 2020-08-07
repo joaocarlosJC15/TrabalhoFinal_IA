@@ -4,3 +4,5 @@ export const databaseSQLInfo = {
   password : 'sfcJC1998;',
   database : 'ia'
 };
+
+export const applicationPort = 3333;
