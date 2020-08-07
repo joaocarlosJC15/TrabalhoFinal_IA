@@ -3,18 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-   
+    
   },
   "repository": "https://github.com/joaocarlosJC15/TrabalhoFinal_IA.git",
   "author": "João Carlos Alvim <jc15joaocarlos@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "clone": "^2.1.2",
+    "express": "^4.17.1",
     "knex": "^0.21.2",
     "pg": "^8.3.0"
   },
   "devDependencies": {
     "@types/clone": "^0.1.30",
+    "@types/express": "^4.17.7",
     "@types/node": "^14.0.27",
     "sucrase": "^3.15.0",
     "typescript": "^3.9.7"
