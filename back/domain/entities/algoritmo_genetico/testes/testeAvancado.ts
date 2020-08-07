@@ -1,16 +1,16 @@
-import { DiaSemana } from '../../interfaces/DiaSemana';
-import { Usuario } from '../../interfaces/Usuario';
-import { Grade } from '../../interfaces/Grade';
-import { HorarioPorDia } from '../../interfaces/HorarioPorDia';
-import { Periodo } from '../../interfaces/Periodo';
-import { Professor } from '../../interfaces/Professor';
-import { Materia } from '../../interfaces/Materia';
-import { Sala } from '../../interfaces/Sala';
-import { RestricaoHorarioPorDiaPeriodo } from '../../interfaces/restricoes/RestricaoHorarioPorDiaPeriodo';
-import { RestricaoMateriaSala } from '../../interfaces/restricoes/RestricaoMateriaSala';
-import { RestricaoProfessorHorarioPorDia } from '../../interfaces/restricoes/RestricaoProfessorHorarioPorDia';
-import { RestricaoSalaHorarioPorDia } from '../../interfaces/restricoes/RestricaoSalaHorarioPorDia';
-import { AlgortimoGenetico } from '../AlgoritmoGenetico';
+import { DiaSemana } from '../../../../interfaces/DiaSemana';
+import { Usuario } from '../../../../interfaces/Usuario';
+import { Grade } from '../../../../interfaces/Grade';
+import { HorarioPorDia } from '../../../../interfaces/HorarioPorDia';
+import { Periodo } from '../../../../interfaces/Periodo';
+import { Professor } from '../../../../interfaces/Professor';
+import { Materia } from '../../../../interfaces/Materia';
+import { Sala } from '../../sala';
+import { RestricaoHorarioPorDiaPeriodo } from '../../../../interfaces/restricoes/RestricaoHorarioPorDiaPeriodo';
+import { RestricaoMateriaSala } from '../../../../interfaces/restricoes/RestricaoMateriaSala';
+import { RestricaoProfessorHorarioPorDia } from '../../../../interfaces/restricoes/RestricaoProfessorHorarioPorDia';
+import { RestricaoSalaHorarioPorDia } from '../../../../interfaces/restricoes/RestricaoSalaHorarioPorDia';
+import { AlgortimoGenetico } from '../algoritmoGenetico';
 
 const diasSemanas: DiaSemana[] = [
   {

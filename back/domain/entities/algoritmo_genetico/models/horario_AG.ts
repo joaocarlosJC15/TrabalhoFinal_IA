@@ -1,4 +1,4 @@
-import { Sala_AG } from './Sala_AG';
+import { Sala_AG } from './sala_AG';
 
 export class Horario_AG {
   public id: number;

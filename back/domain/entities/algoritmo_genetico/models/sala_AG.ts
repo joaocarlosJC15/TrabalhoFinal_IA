@@ -1,4 +1,4 @@
-import { Aula_AG } from './Aula_AG'
+import { Aula_AG } from './aula_AG'
 
 export class Sala_AG {
   public readonly id: number;

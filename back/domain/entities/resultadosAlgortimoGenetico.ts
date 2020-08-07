@@ -1,6 +1,7 @@
-import { HorarioGerado } from "./HorarioGerado";
+import { HorarioGerado } from "./horarioGerado";
 
-export interface AddResultadosAlgortimoGenetico {
+export interface ResultadosAlgortimoGenetico {
+	id: number;
   fk_grade: number;
   tamanho_populacao: number;
 	numero_geracoes_necessario: number;

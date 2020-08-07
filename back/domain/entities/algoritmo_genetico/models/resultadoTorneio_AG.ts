@@ -1,4 +1,4 @@
-import { Cromossomo_AG } from "./Cromossomo_AG";
+import { Cromossomo_AG } from "./cromossomo_AG";
 
 export class ResultadoTorneio_AG {
   constructor(

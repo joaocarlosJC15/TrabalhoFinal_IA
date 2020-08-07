@@ -1,25 +1,23 @@
 import clone from 'clone';
 
-import { Cromossomo_AG } from "./models/Cromossomo_AG";
-import { RestricaoHorarioPorDiaPeriodo_AG } from './models/restricoes/RestricaoHorarioPorDiaPeriodo_AG';
-import { RestricaoMateriaSala_AG } from './models/restricoes/RestricaoMateriaSala_AG';
-import { RestricaoProfessorHorarioPorDia_AG } from './models/restricoes/RestricaoProfessorHorarioPorDia_AG';
-import { RestricaoSalaHorarioPorDia_AG } from './models/restricoes/RestricaoSalaHorarioPorDia_AG';
-import { Horario_AG } from "./models/Horario_AG";
-import { Sala_AG } from "./models/Sala_AG";
-import { Materia_AG } from "./models/Materia_AG";
-import { Aula_AG } from "./models/Aula_AG";
-import { ResultadoTorneio_AG } from './models/ResultadoTorneio_AG';
+import { Cromossomo_AG } from "./models/cromossomo_AG";
+import { RestricaoHorarioPorDiaPeriodo_AG } from './models/restricoes/restricaoHorarioPorDiaPeriodo_AG';
+import { RestricaoMateriaSala_AG } from './models/restricoes/restricaoMateriaSala_AG';
+import { RestricaoProfessorHorarioPorDia_AG } from './models/restricoes/restricaoProfessorHorarioPorDia_AG';
+import { RestricaoSalaHorarioPorDia_AG } from './models/restricoes/restricaoSalaHorarioPorDia_AG';
+import { Horario_AG } from "./models/horario_AG";
+import { Sala_AG } from "./models/sala_AG";
+import { Materia_AG } from "./models/materia_AG";
+import { Aula_AG } from "./models/aula_AG";
+import { ResultadoTorneio_AG } from './models/resultadoTorneio_AG';
 
-import { HorarioPorDia } from '../interfaces/HorarioPorDia';
-import { Materia } from '../interfaces/Materia';
-import { Sala } from '../interfaces/Sala';
-import { RestricaoHorarioPorDiaPeriodo } from "../interfaces/restricoes/RestricaoHorarioPorDiaPeriodo";
-import { RestricaoMateriaSala } from "../interfaces/restricoes/RestricaoMateriaSala";
-import { RestricaoProfessorHorarioPorDia } from "../interfaces/restricoes/RestricaoProfessorHorarioPorDia";
-import { RestricaoSalaHorarioPorDia } from "../interfaces/restricoes/RestricaoSalaHorarioPorDia";
-import { AddResultadosAlgortimoGenetico } from '../interfaces/ResultadosAlgortimoGenetico';
-import { HorarioGerado } from '../interfaces/HorarioGerado';
+import { HorarioPorDia } from '../horarioPorDia';
+import { Materia } from '../materia';
+import { Sala } from '../sala';
+import { RestricaoHorarioPorDiaPeriodo } from "../restricoes/restricaoHorarioPorDiaPeriodo";
+import { RestricaoMateriaSala } from "../restricoes/restricaoMateriaSala";
+import { RestricaoProfessorHorarioPorDia } from "../restricoes/restricaoProfessorHorarioPorDia";
+import { RestricaoSalaHorarioPorDia } from "../restricoes/restricaoSalaHorarioPorDia";
 
 export class AlgortimoGenetico{
   private dataInicio: Date = new Date;
@@ -197,7 +195,7 @@ export class AlgortimoGenetico{
     return new ResultadoTorneio_AG(participantesTorneio[0], participantesTorneio[1]);
   }
 
-  public gerarHorario(): AddResultadosAlgortimoGenetico {
+  public gerarHorario(): Cromossomo_AG {
     this.populacao.sort(function(elementA, elementB) {
       return elementB.aptidao - elementA.aptidao;
     })
@@ -309,33 +307,6 @@ export class AlgortimoGenetico{
     console.log("DATA INICIO: "+ this.dataInicio);
     console.log("DATA TERMINO: "+ new Date);
 
-    const horarios: HorarioGerado[] = [];
-    for (const horario of this.populacao[0].horarios) {
-      for (const sala of horario.salas) {
-        if (sala.aula) {
-          horarios.push({
-            fk_grade: this.id_grade,
-            fk_horario_por_dia: horario.id,
-            fk_sala: sala.id,
-            fk_materia: sala.aula!.id_materia
-          });
-        }
-      }
-    }
-
-    return {
-      fk_grade: this.id_grade,
-      tamanho_populacao: this.tamanhoPopulacao,
-      numero_geracoes_necessario: this.numeroGeracoesExecutadas,
-      tamanho_torneio: this.tamanhoTorneio,
-      taxa_cruzamento: this.taxaCruzamento,
-      taxa_mutacao: this.taxaMutacao,
-      elitismo: this.elitismo,
-      tamanho_elitismo: this.tamanhoElitismo,
-      aptidao: this.populacao[0].aptidao,
-      data_inicio: this.dataInicio,
-      data_termino: new Date,
-      horarioGerado: horarios
-    }
+    return this.populacao[0]
   }
 }

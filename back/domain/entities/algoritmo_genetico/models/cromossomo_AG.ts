@@ -1,13 +1,13 @@
 import clone from 'clone';
 
-import { Horario_AG } from "./Horario_AG";
-import { Aula_AG } from "./Aula_AG";
-import { Sala_AG } from "./Sala_AG";
-import { RestricaoSalaHorarioPorDia_AG } from "./restricoes/RestricaoSalaHorarioPorDia_AG";
+import { Horario_AG } from "./horario_AG";
+import { Aula_AG } from "./aula_AG";
+import { Sala_AG } from "./sala_AG";
+import { RestricaoSalaHorarioPorDia_AG } from "./restricoes/restricaoSalaHorarioPorDia_AG";
 
-import { ResultadoCrossOver_AG } from './ResultadoCrossover_AG';
-import { Materia_AG } from './Materia_AG';
-import { ValidacaoQuantidadeAulas } from './ValidacaoQuantidadeAulas_AG';
+import { ResultadoCrossOver_AG } from './resultadoCrossover_AG';
+import { Materia_AG } from './materia_AG';
+import { ValidacaoQuantidadeAulas } from './validacaoQuantidadeAulas_AG';
 
 export class Cromossomo_AG{
   public aptidao: number = 0;
