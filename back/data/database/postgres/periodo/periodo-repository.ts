@@ -21,10 +21,10 @@ export class PeriodoRepository implements AddPeriodoRepository {
     .from('periodos')
     .where('fk_grade', id_grade);
 
-    const Periodos= [];
+    const periodos= [];
 
-    for (let Periodo of data) {
-      Periodos.push(this.PeriodoSerializer(Periodo));
+    for (let periodo of data) {
+      periodos.push(this.PeriodoSerializer(periodo));
     }
 
     return data;

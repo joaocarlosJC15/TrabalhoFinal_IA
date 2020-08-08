@@ -11,6 +11,27 @@ export class ProfessorRepository implements AddProfessorRepository {
     return data && this.ProfessorSerializer(data[0]);
   }
 
+  async list(id_grade: number): Promise<Professor []> {
+    const data = await connection.select(
+      'id',
+      'fk_grade',
+      'nome',
+      'descricao',
+      'data_nascimento',
+      'email'
+    )
+    .from('professores')
+    .where('fk_grade', id_grade);
+
+    const professores = [];
+
+    for (let professor of data) {
+      professores.push(this.ProfessorSerializer(professor));
+    }
+
+    return data;
+  }
+
   private ProfessorSerializer(data: any): Professor {
     return {
       id: data.id,
