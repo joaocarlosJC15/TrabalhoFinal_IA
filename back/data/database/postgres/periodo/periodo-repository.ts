@@ -11,6 +11,25 @@ export class PeriodoRepository implements AddPeriodoRepository {
     return data && this.PeriodoSerializer(data[0]);
   }
 
+  async list(id_grade: number): Promise<Periodo []> {
+    const data = await connection.select(
+      'id',
+      'fk_grade',
+      'nome',
+      'descricao'
+    )
+    .from('periodos')
+    .where('fk_grade', id_grade);
+
+    const Periodos= [];
+
+    for (let Periodo of data) {
+      Periodos.push(this.PeriodoSerializer(Periodo));
+    }
+
+    return data;
+  }
+
   private PeriodoSerializer(data: any): Periodo {
     return {
       id: data.id,
