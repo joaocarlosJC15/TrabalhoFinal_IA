@@ -11,12 +11,15 @@ export class SalaRepository implements AddSalaRepository {
     return data && this.salaSerializer(data[0]);
   }
 
-  async list(): Promise<Sala []> {
+  async list(id_grade: number): Promise<Sala []> {
     const data = await connection.select(
       'id',
+      'fk_grade',
       'nome',
       'descricao'
-    ).from('salas');
+    )
+    .from('salas')
+    .where('fk_grade', id_grade);
 
     const salas= [];
 

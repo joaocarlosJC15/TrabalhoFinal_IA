@@ -9,8 +9,8 @@ export class ListSalaUseCase implements ListSala {
     this.listSalaRepository = listSalaRepository;
   }
 
-  async list (): Promise<Sala []> {
-    const data = await this.listSalaRepository.list();
+  async list (id_grade: number): Promise<Sala []> {
+    const data = await this.listSalaRepository.list(id_grade);
 
     return data;
   }

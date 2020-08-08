@@ -13,8 +13,8 @@ export class ListSalaController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const salas = await this.listSala.list();
-
+      const salas = await this.listSala.list(httpRequest.params.id_grade);
+      
       return ok(salas);
     } catch (error) {
       return serverError(error);

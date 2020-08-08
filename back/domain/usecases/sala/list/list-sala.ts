@@ -1,5 +1,5 @@
 import { Sala } from "../../../entities/sala";
 
 export interface ListSala {
-  list(): Promise<Sala []>
+  list(id_grade: number): Promise<Sala []>
 }

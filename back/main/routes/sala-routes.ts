@@ -6,6 +6,6 @@ import { makeAddSalaController } from '../factories/sala/add/add-sala-controller
 import { makeListSalaController } from '../factories/sala/list/list-sala-controller-factory';
 
 export default (router: Router): void => {
-  router.post('/salas', adaptRoute(makeAddSalaController()));
-  router.get('/salas', adaptRoute(makeListSalaController()));
+  router.post('/grades/:id_grade/salas', adaptRoute(makeAddSalaController()));
+  router.get('/grades/:id_grade/salas', adaptRoute(makeListSalaController()));
 }

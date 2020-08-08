@@ -13,8 +13,9 @@ export class AddSalaController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { fk_grade, nome, descricao } = httpRequest.body;
-
+      const { nome, descricao } = httpRequest.body;
+      const fk_grade = httpRequest.params.id_grade;
+      
       const sala = await this.addSala.add({
         fk_grade,
         nome,
