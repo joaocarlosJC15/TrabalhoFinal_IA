@@ -3,8 +3,9 @@ import { connection } from '../config/postgres-config';
 import { AddMateriaRepository } from "../../../../domain/protocols/database/materia/add-materia-repository";
 import { AddMateriaEntity } from "../../../../domain/usecases/materia/add/add-materia";
 import { Materia } from "../../../../domain/entities/materia";
+import { ListMateriaRepository } from '../../../../domain/protocols/database/materia/list-materia-repository';
 
-export class MateriaRepository implements AddMateriaRepository {
+export class MateriaRepository implements AddMateriaRepository, ListMateriaRepository {
   async add (addMateriaData: AddMateriaEntity): Promise<Materia> {
     const data = await connection('materias').insert(addMateriaData).returning('*');
     
@@ -15,8 +16,11 @@ export class MateriaRepository implements AddMateriaRepository {
     const data = await connection.select(
       'id',
       'fk_grade',
+      'fk_professor',
+      'fk_periodo',
       'nome',
-      'descricao'
+      'descricao',
+      'quantidade_aulas'
     )
     .from('materias')
     .where('fk_grade', id_grade);
