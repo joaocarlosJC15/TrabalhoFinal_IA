@@ -17,7 +17,6 @@ export class ListRestricaoHorarioPorDiaPeriodoController implements Controller {
       
       return ok(restricoesHorarioPorDiaPeriodo);
     } catch (error) {
-      console.log(error)
       return serverError(error);
     }
   }

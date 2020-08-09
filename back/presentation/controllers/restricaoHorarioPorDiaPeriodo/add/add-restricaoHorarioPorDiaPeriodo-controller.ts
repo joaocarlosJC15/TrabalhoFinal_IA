@@ -15,10 +15,10 @@ export class AddRestricaoHorarioPorDiaPeriodoController implements Controller {
     try {
       const { 
         fk_horario,
+        fk_periodo,
       } = httpRequest.body;
 
       const fk_grade = httpRequest.params.id_grade;
-      const fk_periodo = httpRequest.params.id_periodo;
       
       const restricaoHorarioPorDiaPeriodo = await this.addRestricaoHorarioPorDiaPeriodo.add({
         fk_periodo,
