@@ -9,6 +9,6 @@ export interface Materia {
   fk_professor: number;
   fk_periodo: number;
   fk_grade: number;
-  professor: Professor;
-  periodo: Periodo;
+  professor?: Professor;
+  periodo?: Periodo;
 }
