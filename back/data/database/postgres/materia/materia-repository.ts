@@ -25,13 +25,13 @@ export class MateriaRepository implements AddMateriaRepository, ListMateriaRepos
     .from('materias')
     .where('fk_grade', id_grade);
 
-    const Materias= [];
+    const materias= [];
 
-    for (let Materia of data) {
-      Materias.push(this.MateriaSerializer(Materia));
+    for (let materia of data) {
+      materias.push(this.MateriaSerializer(materia));
     }
 
-    return data;
+    return materias;
   }
 
   MateriaSerializer(data: any): Materia {

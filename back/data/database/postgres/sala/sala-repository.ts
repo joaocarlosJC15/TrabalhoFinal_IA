@@ -21,13 +21,13 @@ export class SalaRepository implements AddSalaRepository {
     .from('salas')
     .where('fk_grade', id_grade);
 
-    const salas= [];
+    const salas = [];
 
     for (let sala of data) {
       salas.push(this.salaSerializer(sala));
     }
 
-    return data;
+    return salas;
   }
 
   salaSerializer(data: any): Sala {

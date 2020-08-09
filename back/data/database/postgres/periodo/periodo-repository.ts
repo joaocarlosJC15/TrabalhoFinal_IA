@@ -21,13 +21,13 @@ export class PeriodoRepository implements AddPeriodoRepository {
     .from('periodos')
     .where('fk_grade', id_grade);
 
-    const periodos= [];
+    const periodos = [];
 
     for (let periodo of data) {
       periodos.push(this.PeriodoSerializer(periodo));
     }
 
-    return data;
+    return periodos;
   }
 
   private PeriodoSerializer(data: any): Periodo {

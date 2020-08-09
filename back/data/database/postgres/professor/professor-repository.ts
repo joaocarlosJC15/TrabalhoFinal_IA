@@ -29,7 +29,7 @@ export class ProfessorRepository implements AddProfessorRepository {
       professores.push(this.ProfessorSerializer(professor));
     }
 
-    return data;
+    return professores;
   }
 
   private ProfessorSerializer(data: any): Professor {

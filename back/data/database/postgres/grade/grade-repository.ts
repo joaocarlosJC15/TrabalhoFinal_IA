@@ -24,7 +24,7 @@ export class GradeRepository implements AddGradeRepository, ListGradeRepository 
       grades.push(this.gradeSerializer(grade));
     }
 
-    return data;
+    return grades;
   }
 
   gradeSerializer(data: any): Grade {
