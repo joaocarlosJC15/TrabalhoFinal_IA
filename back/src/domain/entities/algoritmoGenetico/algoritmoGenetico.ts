@@ -311,7 +311,7 @@ export class AlgortimoGenetico{
       this.taxaCruzamento,
       this.taxaMutacao,
       this.elitismo,
-      (this.populacao[0].aptidao/this.qtdeAulas * 3) * 100,
+      (this.populacao[0].aptidao/(this.qtdeAulas * 3)) * 100,
       this.dataInicio,
       new Date,
       this.populacao[0].horarios,
