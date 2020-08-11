@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { MainLayoutComponent } from './layouts/main/main-layout.component';
 import { ALL_ROUTES } from './shared/routes/all.routes';
-import { GradeRoutes } from './pages/grade/grade.routing';
+import { GradeGuard } from './shared/guards/grade-guard.service';
 
 export const AppRoutes: Routes = [
   {
@@ -18,7 +18,8 @@ export const AppRoutes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    children: ALL_ROUTES
+    children: ALL_ROUTES,
+    canActivate: [GradeGuard]
   },
   {
     path: '**',

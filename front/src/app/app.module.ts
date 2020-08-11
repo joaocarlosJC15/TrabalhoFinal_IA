@@ -7,6 +7,7 @@ import { SharedModule} from 'app/shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
+import { GradeGuard } from './shared/guards/grade-guard.service'
 
 import { MainLayoutComponent } from './layouts/main/main-layout.component';
 
@@ -22,7 +23,7 @@ import { MainLayoutComponent } from './layouts/main/main-layout.component';
     ToastrModule.forRoot(),
     SharedModule,
   ],
-  providers: [],
+  providers: [GradeGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
