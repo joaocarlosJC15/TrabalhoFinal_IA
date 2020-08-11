@@ -3,8 +3,9 @@ import { connection } from '../config/postgres-config';
 import { AddResultadoAlgoritmoGeneticoRepository } from "../../../../domain/protocols/database/resultadoAlgoritmoGenetico/add-resultadoAlgoritmoGenetico-repository";
 import { AddResultadoAlgoritmoGeneticoEntity } from "../../../../domain/usecases/resultadoAlgoritmoGenetico/add/add-resultadoAlgoritmoGenetico";
 import { ResultadoAlgoritmoGenetico } from "../../../../domain/entities/resultadoAlgoritmoGenetico";
+import { ListResultadoAlgoritmoGeneticoRepository } from '../../../../domain/protocols/database/resultadoAlgoritmoGenetico/list-resultadoAlgoritmoGenetico-repository';
 
-export class ResultadoAlgoritmoGeneticoRepository implements AddResultadoAlgoritmoGeneticoRepository {
+export class ResultadoAlgoritmoGeneticoRepository implements AddResultadoAlgoritmoGeneticoRepository, ListResultadoAlgoritmoGeneticoRepository {
   async add (addResultadoAlgoritmoGeneticoData: AddResultadoAlgoritmoGeneticoEntity): Promise<ResultadoAlgoritmoGenetico> {
     const horarios = addResultadoAlgoritmoGeneticoData.horariosGerados.slice();
 
@@ -27,6 +28,27 @@ export class ResultadoAlgoritmoGeneticoRepository implements AddResultadoAlgorit
     }
 
     return data && this.resultadoAlgoritmoGeneticoSerializer(data[0]);
+  }
+
+  async list(id_grade: number): Promise<ResultadoAlgoritmoGenetico []> {
+    const data = await connection.select(
+      'id',
+      'fk_grade',
+      'tamanho_populacao',
+      'numero_geracoes_necessario',
+      'tamanho_torneio',
+      'taxa_cruzamento',
+      'taxa_mutacao',
+      'elitismo',
+      'tamanho_elitismo',
+      'aptidao',
+      'data_inicio',
+      'data_termino',
+    )
+    .from('resultados_algoritmo_genetico')
+    .where('fk_grade', id_grade);
+
+    return data;
   }
 
   private resultadoAlgoritmoGeneticoSerializer(data: any): ResultadoAlgoritmoGenetico {
