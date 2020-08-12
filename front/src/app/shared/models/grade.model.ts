@@ -4,7 +4,6 @@ export class Grade {
     public nome: string,
     public descricao?: string
   ) {
-
   }
 
   static deserialize(data: any): Grade {
