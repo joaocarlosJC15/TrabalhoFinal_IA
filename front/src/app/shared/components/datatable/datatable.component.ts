@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ColumnDatatable } from 'app/shared/models/columnDatatable';
+import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 
 @Component({
     selector: 'datatable-cmp',

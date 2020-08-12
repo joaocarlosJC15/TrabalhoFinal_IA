@@ -6,34 +6,34 @@ import { map } from 'rxjs/operators';
 import { backEndAcess } from 'environments/backEnd';
 
 import { GradeService } from './grade.service';
-import { ResultadoAlgoritmoGenetico } from '../models/resultadoAlgoritmoGenetico.model';
+import { Periodo } from '../models/periodo.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ResultadoAlgoritmoGeneticoService {
+export class PeriodoService {
   url = backEndAcess.url;
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
-  list():Observable<ResultadoAlgoritmoGenetico[]> {
+  list():Observable<Periodo[]> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
-      this.gradeService.getIdGradeOnStorage() + '/' + 'resultadosalgoritmogenetico')
+      this.gradeService.getIdGradeOnStorage() + '/' + 'periodos')
     .pipe(
       map((data: any[]) => {
         
-        const resultados: ResultadoAlgoritmoGenetico[] = []
+        const periodos: Periodo[] = []
         for (const element of data) {
-          resultados.push(this.responseDataToResultadoAlgoritmoGenetico(element));
+          periodos.push(this.responseDataToPeriodo(element));
         }
 
-        return resultados;
+        return periodos;
       })
     );
   }
 
-  responseDataToResultadoAlgoritmoGenetico(data: any): ResultadoAlgoritmoGenetico {
-    return ResultadoAlgoritmoGenetico.deserialize(data);
+  responseDataToPeriodo(data: any): Periodo {
+    return Periodo.deserialize(data);
   }
 }

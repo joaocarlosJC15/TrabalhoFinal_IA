@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GradeService } from 'app/shared/services/grade.service';
-import { ColumnDatatable } from 'app/shared/models/columnDatatable';
+import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 import { Grade } from 'app/shared/models/grade.model';
 
 @Component({
