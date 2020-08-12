@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ResultadoAlgoritmoGeneticoService } from 'app/shared/services/resultadoAlgoritmoGenetico.service';
 
-import { ResultadoAlgoritmoGenetico } from 'app/shared/models/resultadoAlgoritmoGenetico';
+import { ResultadoAlgoritmoGenetico } from 'app/shared/models/resultadoAlgoritmoGenetico.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable';
 
 @Component({

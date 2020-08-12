@@ -8,6 +8,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if(error.status === 500) {
           alert("Ocorreu um erro no servidor, por favor tente novamente")
+        } else {
+          alert(error.message);
         }
         return throwError(error)
       })

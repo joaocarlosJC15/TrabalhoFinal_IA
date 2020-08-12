@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { backEndAcess } from 'environments/backEnd';
 
 import { GradeService } from './grade.service';
-import { ResultadoAlgoritmoGenetico } from '../models/resultadoAlgoritmoGenetico';
+import { ResultadoAlgoritmoGenetico } from '../models/resultadoAlgoritmoGenetico.model';
 
 @Injectable({
   providedIn: 'root'
