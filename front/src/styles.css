@@ -5,3 +5,16 @@
 .ngx-datatable.material .datatable-header .datatable-header-cell {
   font-size: 14px !important;
 }
+
+.align-center {
+  display: flex !important;
+  justify-content: center;
+}
+
+.no-selection .datatable-body-row.active {
+  background-color: transparent !important;
+}
+
+.datatable-body-row.active .datatable-row-group {
+  background:  transparent !important;
+}

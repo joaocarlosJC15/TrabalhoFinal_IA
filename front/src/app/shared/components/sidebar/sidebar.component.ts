@@ -11,6 +11,7 @@ export interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { path: '/grades',     title: 'Grade', icon:'nc-bank', class: '' },
     { path: '/periodos',   title: 'Periodo', icon:'nc-bank', class: '' },
+    { path: '/resultados',   title: 'Resultados algoritmo', icon:'nc-bank', class: '' },
 ];
 
 @Component({

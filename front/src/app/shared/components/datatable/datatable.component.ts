@@ -9,12 +9,16 @@ import { ColumnDatatable } from 'app/shared/models/columnDatatable';
 export class DatatableComponent{
   @Input() rows: any[];
   @Input() columns: ColumnDatatable[];
+  @Input() selectionType: string;
 
   @Output() eventSelectData = new EventEmitter();
   @Output() eventDoubleClick = new EventEmitter();
 
   rowsSelected: any[] = []
 
+  ngOnInit(){
+    
+  }
   onSelect() {
     this.eventSelectData.emit(this.rowsSelected[0]);
   }

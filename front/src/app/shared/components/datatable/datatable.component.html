@@ -1,5 +1,6 @@
 <ngx-datatable
   class="material"
+  [ngClass]="{'no-selection' : selectionType !== 'single'}"
   [rows]="rows"
   [loadingIndicator]="loadingIndicator"
   [columns]="columns"
@@ -7,8 +8,9 @@
   [headerHeight]="50"
   [footerHeight]="50"
   rowHeight="auto"
+  [scrollbarH]="true"
   [reorderable]="reorderable"
-  [selectionType]="'single'"
+  [selectionType]="selectionType ? selectionType : 'single'"
   [selected]="rowsSelected"
   (select)="onSelect($event)"
   (dblclick)="doubleClick()"
