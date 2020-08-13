@@ -5,18 +5,21 @@ import { SharedModule } from 'app/shared/shared.module';
 
 import { ResultadoAlgoritmoGeneticoListComponent } from './list/resultadoAlgoritmoGenetico-list.component';
 import { ResultadoAlgoritmoGeneticoRoutes } from './resultadoAlgoritmoGenetico.routing';
+import { HorarioComponent } from './horario/horario.component';
 
 
 @NgModule({
   declarations: [
-    ResultadoAlgoritmoGeneticoListComponent
+    ResultadoAlgoritmoGeneticoListComponent,
+    HorarioComponent
   ],
   imports: [
     SharedModule,
     RouterModule.forChild(ResultadoAlgoritmoGeneticoRoutes),
   ],
   exports: [
-    ResultadoAlgoritmoGeneticoListComponent
+    ResultadoAlgoritmoGeneticoListComponent,
+    HorarioComponent
   ],
   providers: [],
 })

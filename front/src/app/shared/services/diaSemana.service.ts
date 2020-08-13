@@ -29,7 +29,7 @@ export class DiaSemanaService {
     );
   }
 
-  responseDataToDiaSemana(data: any): DiaSemana {
+  private responseDataToDiaSemana(data: any): DiaSemana {
     return DiaSemana.deserialize(data);
   }
 }

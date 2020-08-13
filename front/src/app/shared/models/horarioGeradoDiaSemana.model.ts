@@ -16,7 +16,18 @@ export class HorarioGeradoDiaSemana {
         horariosGerados[i].materia.fk_periodo === id_periodo) {
           this.horariosGerados.push(horariosGerados[i]);
           horariosGerados.splice(i,1);
+          i = i - 1;
         }
     }
+
+    this.horariosGerados.sort(function(horarioA, horarioB) {
+      const vetorHoraInicioA = horarioA.horarioPorDia.horario_inicio.split(':');
+      const vetorHoraInicioB = horarioB.horarioPorDia.horario_inicio.split(':');
+
+      const resultadoA = Number(vetorHoraInicioA[0] + vetorHoraInicioA[1]);
+      const resultadoB = Number(vetorHoraInicioB[0] + vetorHoraInicioB[1]);
+
+      return resultadoA - resultadoB;
+    })
   }
 }

@@ -12,6 +12,11 @@
   [reorderable]="reorderable"
   [selectionType]="selectionType ? selectionType : 'single'"
   [selected]="rowsSelected"
+  [messages]="{
+    emptyMessage: 'Não há dados a serem mostrados',
+    totalMessage: 'total',
+    selectedMessage: 'selecionados'
+  }"
   (select)="onSelect($event)"
   (dblclick)="doubleClick()"
   >
