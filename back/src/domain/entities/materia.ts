@@ -1,5 +1,5 @@
 import { Professor, deserializeProfessor } from "./professor";
-import { Periodo } from "./periodo";
+import { Periodo, deserializePeriodo } from "./periodo";
 
 export interface Materia {
   id: number;
@@ -22,6 +22,7 @@ export function deserializeMateria(data: any): Materia {
     fk_professor: data['materias_fk_professor'],
     fk_periodo: data['materias_fk_periodo'],
     fk_grade: data['materias_fk_grade'],
-    professor: deserializeProfessor(data)
+    professor: deserializeProfessor(data),
+    periodo: deserializePeriodo(data)
   };
 }

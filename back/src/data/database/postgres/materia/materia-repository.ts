@@ -2,7 +2,7 @@ import { connection } from '../config/postgres-config';
 
 import { AddMateriaRepository } from "../../../../domain/protocols/database/materia/add-materia-repository";
 import { AddMateriaEntity } from "../../../../domain/usecases/materia/add/add-materia";
-import { Materia } from "../../../../domain/entities/materia";
+import { Materia, deserializeMateria } from "../../../../domain/entities/materia";
 import { ListMateriaRepository } from '../../../../domain/protocols/database/materia/list-materia-repository';
 
 export class MateriaRepository implements AddMateriaRepository, ListMateriaRepository {
@@ -14,16 +14,28 @@ export class MateriaRepository implements AddMateriaRepository, ListMateriaRepos
 
   async list(id_grade: number): Promise<Materia []> {
     const data = await connection.select(
-      'id',
-      'fk_grade',
-      'fk_professor',
-      'fk_periodo',
-      'nome',
-      'descricao',
-      'quantidade_aulas'
+      'materias.id as materias_id',
+      'materias.nome as materias_nome',
+      'materias.descricao as materias_descricao',
+      'materias.quantidade_aulas as materias_quantidade_aulas',
+      'materias.fk_professor as materias_fk_professor',
+      'materias.fk_periodo as materias_fk_periodo',
+      'materias.fk_grade as materias_fk_grade',
+      'professores.id as professores_id',
+      'professores.nome as professores_nome',
+      'professores.descricao as professores_descricao',
+      'professores.data_nascimento as professores_data_nascimento',
+      'professores.email as professores_email',
+      'professores.fk_grade as professores_fk_grade',
+      'periodos.id as periodos_id',
+      'periodos.nome as periodos_nome',
+      'periodos.descricao as periodos_descricao',
+      'periodos.fk_grade as periodos_fk_grade',
     )
     .from('materias')
-    .where('fk_grade', id_grade);
+    .join('professores', 'materias.fk_professor', 'professores.id')
+    .join('periodos', 'materias.fk_periodo', 'periodos.id')
+    .where('materias.fk_grade', id_grade);
 
     const materias= [];
 
@@ -35,14 +47,6 @@ export class MateriaRepository implements AddMateriaRepository, ListMateriaRepos
   }
 
   MateriaSerializer(data: any): Materia {
-    return {
-      id: data.id,
-      fk_grade: data.fk_grade,
-      fk_professor: data.fk_professor,
-      fk_periodo: data.fk_periodo,
-      nome: data.nome,
-      descricao: data.descricao,
-      quantidade_aulas: data.quantidade_aulas
-    }  
+    return deserializeMateria(data)
   }
 }
