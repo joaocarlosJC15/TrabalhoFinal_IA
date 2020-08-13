@@ -10,7 +10,21 @@ export class RestricaoMateriaSalaRepository implements AddRestricaoMateriaSalaRe
   async add (addRestricaoMateriaSalaData: AddRestricaoMateriaSalaEntity): Promise<RestricaoMateriaSala> {
     const data = await connection('restricoes_materias_salas').insert(addRestricaoMateriaSalaData).returning('*');
     
-    return data && this.restricaoMateriaSalaSerializer(data[0]);
+    const restricao = await connection.select(
+      'fk_materia as restricoes_materias_salas_fk_materia',
+      'fk_sala as restricoes_materias_salas_fk_sala',
+      'salas.id as salas_id',
+      'salas.nome as salas_nome',
+      'salas.descricao as salas_descricao',
+      'salas.fk_grade as salas_fk_grade'
+    )
+    .from('restricoes_materias_salas')
+    .join('materias', 'restricoes_materias_salas.fk_materia', 'materias.id')
+    .join('salas', 'restricoes_materias_salas.fk_sala', 'salas.id')
+    .where('restricoes_materias_salas.fk_materia', data[0].fk_materia)
+    .where('restricoes_materias_salas.fk_sala', data[0].fk_sala);
+      
+    return this.restricaoMateriaSalaSerializer(restricao[0]);
   }
 
   async list(id_grade: number): Promise<RestricaoMateriaSala []> {
