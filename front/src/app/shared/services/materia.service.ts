@@ -19,6 +19,16 @@ export class MateriaService {
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
+  get(id_materia: number):Observable<Materia> {
+    return this.http.get(this.url + '/' +  'grades' + '/' + 
+      this.gradeService.getIdGradeOnStorage() + '/materias' + '/' + id_materia)
+    .pipe(
+      map((data: any[]) => {
+        return this.responseDataToMateria(data);
+      })
+    );
+  }
+
   list():Observable<Materia[]> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/' + 'materias')

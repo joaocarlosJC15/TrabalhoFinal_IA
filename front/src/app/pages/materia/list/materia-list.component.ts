@@ -3,6 +3,7 @@ import { MateriaService } from 'app/shared/services/materia.service';
 
 import { Materia } from 'app/shared/models/materia.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'materia-list-cmp',
@@ -20,12 +21,19 @@ export class MateriaListComponent implements OnInit{
       {name: 'Periodo', prop: 'periodo.nome', minWidth: 200, maxWidth: 300}
   ];
 
-  constructor(public materiaService: MateriaService) {
+  constructor(
+    public materiaService: MateriaService,
+    public router: Router
+  ) {
   }
 
   ngOnInit(){
     this.materiaService.list().subscribe(materias => {
       this.rows = materias;
     });
+  }
+
+  doubleClick(materia: Materia) {
+    this.router.navigate(['materias/'+materia.id+'/editar']);
   }
 }

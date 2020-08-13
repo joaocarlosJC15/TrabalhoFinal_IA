@@ -1,0 +1,64 @@
+<h2>Gerar horário</h2>
+
+<form [formGroup]="materiaForm" *ngIf="materiaForm">
+  <div class="form-row">
+    <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-6 col-6">
+      <label>ID</label>
+      <input type="number" class="form-control" formControlName="id">
+    </div>
+
+    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+      <label>Nome</label>
+      <input type="text" class="form-control" formControlName="nome">
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Qtde aulas</label>
+      <input type="number" class="form-control" formControlName="quantidade_aulas">
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Descrição</label>
+      <input type="text" class="form-control" formControlName="descricao">
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Nome professor</label>
+      <input type="text" class="form-control" formControlName="nome_professor">
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Nome periodo</label>
+      <input type="text" class="form-control" formControlName="nome_periodo">
+    </div>
+  </div>
+</form>
+
+<div class="mt-3 mb-0">
+  <h5>Restrições salas</h5>
+</div>
+
+<div style="display: flex; justify-content: flex-end;">
+  <button type="button" class="btn btn-success mt-0" (click)="openModalForSelectSala(modalSelectSala)">Nova</button>
+</div>
+
+<datatable-cmp
+  [rows]="restricoesMateriaSala"
+  [columns]="columnsRestricoes"
+  >
+</datatable-cmp>
+
+<ng-template #modalSelectSala let-modal>
+  <div class="modal-header">
+    <h2 class="modal-title">Selecione a sala</h2>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <sala-list-cmp
+      [selectData]="true"
+      (eventSelectData)="getSelectedSala($event)">
+    </sala-list-cmp>
+  </div>
+</ng-template>
