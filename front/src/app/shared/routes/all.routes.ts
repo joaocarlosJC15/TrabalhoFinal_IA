@@ -22,5 +22,9 @@ export const ALL_ROUTES = [
   {
     path: 'professores',
     loadChildren: 'app/pages/professor/professor.module#ProfessorModule'
+  },
+  {
+    path: 'horariospordia',
+    loadChildren: 'app/pages/horarioPorDia/horarioPorDia.module#HorarioPorDiaModule'
   }
 ]

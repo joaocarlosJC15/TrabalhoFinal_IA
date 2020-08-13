@@ -14,6 +14,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/salas',   title: 'Salas', icon:'nc-bank', class: '' },
     { path: '/professores',   title: 'Professores', icon:'nc-bank', class: '' },
     { path: '/materias',   title: 'Matérias', icon:'nc-bank', class: '' },
+    { path: '/horariospordia',   title: 'Horários por dia', icon:'nc-bank', class: '' },
     { path: '/resultados',   title: 'Resultados algoritmo', icon:'nc-bank', class: '' },
     { path: '/gerarhorarios',   title: 'Gerar horário', icon:'nc-bank', class: '' }
 ];

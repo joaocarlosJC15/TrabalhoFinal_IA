@@ -28,6 +28,6 @@ export class HorarioGeradoDiaSemana {
       const resultadoB = Number(vetorHoraInicioB[0] + vetorHoraInicioB[1]);
 
       return resultadoA - resultadoB;
-    })
+    });
   }
 }
