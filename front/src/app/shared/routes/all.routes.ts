@@ -7,8 +7,8 @@ export const ALL_ROUTES = [
     path: 'resultados',
     loadChildren: 'app/pages/resultadoAlgoritmoGenetico/resultadoAlgoritmoGenetico.module#ResultadoAlgoritmoGeneticoModule'
   },
-  // {
-  //   path: 'salas',
-  //   loadChildren: 'app/pages/sala/sala.module#SalaModule'
-  // }
+  {
+    path: 'gerarhorarios',
+    loadChildren: 'app/pages/gerarHorario/gerarHorario.module#GerarHorarioModule'
+  },
 ]

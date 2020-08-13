@@ -11,7 +11,6 @@ export class GradeGuard implements CanActivate {
 
   canActivate(): boolean {
     if (this.gradeService.getIdGradeOnStorage()) {
-      console.log(this.gradeService.getIdGradeOnStorage())
       return true;
     }
     alert("Por favor, selecione primeiro uma grade");
