@@ -114,25 +114,26 @@ export class PeriodoEditComponent implements OnInit{
 
   searchExistisHorario(restricoes: HorarioPorDiaDiaSemana[], horario: HorarioPorDia, searchByDiaSemana?: boolean): number {
     let index = -1;
-
-    for (let i = 0; i < restricoes.length; i = i + 1) {
-      index = restricoes[i].horariosGeradosDiaSemana.findIndex(horarioDia => {
-        if (searchByDiaSemana) {
-          if (restricoes[i].diaSemana.id === horario.fk_dia_semana) {
-            return true
-          }
-        }
-        else if (horarioDia.id === horario.id) {
+    if (searchByDiaSemana) {
+      index = restricoes.findIndex(element => {
+        if (element.diaSemana.id === horario.fk_dia_semana) {
           return true;
         }
-      });
-
-      if (index !== -1) {
-        index = i;
-        break;
+      })
+    } else {
+      for (let i = 0; i < restricoes.length; i = i + 1) {
+        index = restricoes[i].horariosGeradosDiaSemana.findIndex(horarioDia => {
+          if (horarioDia.id === horario.id) {
+            return true;
+          }
+        });
+  
+        if (index !== -1) {
+          index = i;
+          break;
+        }
       }
     }
-
     return index;
   }
 

@@ -32,7 +32,6 @@ export class SalaListComponent implements OnInit{
   ngOnInit(){
     this.salaService.list().subscribe(salas => {
       this.rows = salas;
-      console.log(salas)
     });
   }
 

@@ -3,26 +3,26 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { SalaService } from 'app/shared/services/sala.service';
-import { RestricaoSalaHorarioPorDiaService } from 'app/shared/services/restricaoSalaHorarioPorDia.service';
+import { ProfessorService } from 'app/shared/services/professor.service';
+import { RestricaoProfessorHorarioPorDiaService } from 'app/shared/services/restricaoProfessorHorarioPorDia.service';
 import { DiaSemanaService } from 'app/shared/services/diaSemana.service';
 
-import { Sala } from 'app/shared/models/Sala.model';
+import { Professor } from 'app/shared/models/professor.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 import { HorarioPorDia } from 'app/shared/models/horarioPorDia.model';
 import { HorarioPorDiaDiaSemana } from 'app/shared/models/horarioPorDiaDiaSemana';
 import { DiaSemana } from 'app/shared/models/diaSemana.model';
-import { RestricaoSalaHorarioPorDia } from 'app/shared/models/restricaoSalaHorarioPorDia.model';
+import { RestricaoProfessorHorarioPorDia } from 'app/shared/models/restricaoprofessorHorarioPorDia.model';
 
 @Component({
-  selector: 'sala-edit-cmp',
-  templateUrl: 'sala-edit.component.html'
+  selector: 'professor-edit-cmp',
+  templateUrl: 'professor-edit.component.html'
 })
 
-export class SalaEditComponent implements OnInit{
+export class ProfessorEditComponent implements OnInit{
 
-  salaForm: FormGroup;
-  sala: Sala;
+  professorForm: FormGroup;
+  professor: Professor;
   submissionForm: boolean;
 
   restricoes: HorarioPorDiaDiaSemana[] = [];
@@ -35,8 +35,8 @@ export class SalaEditComponent implements OnInit{
   constructor(
     public router: Router,
     private route: ActivatedRoute,
-    private salaService: SalaService,
-    private restricaoSalaHorarioPorDiaService: RestricaoSalaHorarioPorDiaService,
+    private professorService: ProfessorService,
+    private restricaoprofessorHorarioPorDiaService: RestricaoProfessorHorarioPorDiaService,
     private diaSemanaService: DiaSemanaService,
     private modalService: NgbModal
   ) {}
@@ -45,32 +45,35 @@ export class SalaEditComponent implements OnInit{
     this.route.params.subscribe(params => {
       let diasSemana: DiaSemana[];
 
-      this.salaService.get(params['id_sala']).toPromise()
-      .then(sala => {
-        this.initializeForm(sala);
-        this.sala = sala;
+      this.professorService.get(params['id_professor']).toPromise()
+      .then(professor => {
+        this.initializeForm(professor);
+        this.professor = professor;
 
         return this.diaSemanaService.list().toPromise();
       })
       .then(diasSemanaResponse => {
         diasSemana = diasSemanaResponse;
-        return this.restricaoSalaHorarioPorDiaService.get(params['id_sala']).toPromise();
+        return this.restricaoprofessorHorarioPorDiaService.get(params['id_professor']).toPromise();
       })
       .then(restricoes => {
         this.restricoes = this.generateRestricoesHorarios(diasSemana, restricoes);
+        console.log(this.restricoes)
       })
     });
   }
 
-  initializeForm(sala: Sala) {
-    this.salaForm = new FormGroup({
-      id: new FormControl({value: sala.id, disabled: true}),
-      nome: new FormControl(sala.nome, Validators.required),
-      descricao: new FormControl(sala.descricao)
+  initializeForm(professor: Professor) {
+    this.professorForm = new FormGroup({
+      id: new FormControl({value: professor.id, disabled: true}),
+      nome: new FormControl(professor.nome, Validators.required),
+      descricao: new FormControl(professor.descricao),
+      data_nascimento: new FormControl(professor.data_nascimento),
+      email: new FormControl(professor.email)
     });
   }
 
-  generateRestricoesHorarios(diasSemana: DiaSemana[], restricoes: RestricaoSalaHorarioPorDia[]): HorarioPorDiaDiaSemana[] {
+  generateRestricoesHorarios(diasSemana: DiaSemana[], restricoes: RestricaoProfessorHorarioPorDia[]): HorarioPorDiaDiaSemana[] {
     const horarios: HorarioPorDiaDiaSemana[] = [];
     const horariosRestricoes: HorarioPorDia[] = [];
 
@@ -94,16 +97,18 @@ export class SalaEditComponent implements OnInit{
     if (this.searchExistisHorario(this.restricoes, horario) === -1) {
       this.modalService.dismissAll();
 
-      this.addRestricao(this.sala, horario);
+      this.addRestricao(this.professor, horario);
     } else {
-      alert("O período já possui restrição para o horário selecionado! Selecione outro horário.");
+      alert("O professor já possui restrição para o horário selecionado! Selecione outro horário.");
     }
   }
 
-  addRestricao(sala: Sala, horario: HorarioPorDia) {
-    this.restricaoSalaHorarioPorDiaService.add(sala.id, horario.id).subscribe(restricao => {
+  addRestricao(professor: Professor, horario: HorarioPorDia) {
+    console.log(horario)
+    console.log(professor)
+    this.restricaoprofessorHorarioPorDiaService.add(professor.id, horario.id).subscribe(restricao => {
       const index =  this.searchExistisHorario(this.restricoes, horario, true);
-
+      console.log(index)
       this.restricoes[index].horariosGeradosDiaSemana.unshift(horario);
   
       this.updateRows();

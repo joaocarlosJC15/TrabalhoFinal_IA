@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfessorService } from 'app/shared/services/professor.service';
+import { Router } from '@angular/router';
 
 import { Professor } from 'app/shared/models/Professor.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
@@ -20,12 +21,19 @@ export class ProfessorListComponent implements OnInit{
       {name: 'Email', prop: 'email', minWidth: 200}
   ];
 
-  constructor(public professorService: ProfessorService) {
+  constructor(
+    public professorService: ProfessorService,
+    public router: Router
+  ) {
   }
 
   ngOnInit(){
     this.professorService.list().subscribe(professores => {
       this.rows = professores;
     });
+  }
+
+  doubleClick(professor: Professor) {
+    this.router.navigate(['professores/'+professor.id+'/editar']);
   }
 }
