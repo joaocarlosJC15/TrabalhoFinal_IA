@@ -13,6 +13,7 @@ export class RestricaoHorarioPorDiaPeriodoRepository implements AddRestricaoHora
     const restricao = await connection.select(
       'restricoes_horarios_por_dia_periodos.fk_horario as restricoes_horarios_por_dia_periodos_fk_horario',
       'restricoes_horarios_por_dia_periodos.fk_periodo as restricoes_horarios_por_dia_periodos_fk_periodo',
+      'horarios_por_dia.id as horarios_por_dia_id',
       'horarios_por_dia.horario_inicio as horarios_por_dia_horario_inicio',
       'horarios_por_dia.horario_termino as horarios_por_dia_horario_termino',
       connection.raw(`(select count(fk_horario) from restricoes_horarios_por_dia_periodos where restricoes_horarios_por_dia_periodos.fk_horario = horarios_por_dia.id) as horarios_por_dia_qtde_aulas_simultaneas`),
@@ -23,7 +24,7 @@ export class RestricaoHorarioPorDiaPeriodoRepository implements AddRestricaoHora
     .join('horarios_por_dia', 'restricoes_horarios_por_dia_periodos.fk_horario', 'horarios_por_dia.id')
     .where('restricoes_horarios_por_dia_periodos.fk_periodo', data[0].fk_periodo)
     .where('restricoes_horarios_por_dia_periodos.fk_horario', data[0].fk_horario);
-
+      
     return deserializeRestricaoHorarioPorDiaPeriodo(restricao[0]);
   }
 
@@ -31,6 +32,7 @@ export class RestricaoHorarioPorDiaPeriodoRepository implements AddRestricaoHora
     const data = await connection.select(
       'restricoes_horarios_por_dia_periodos.fk_horario as restricoes_horarios_por_dia_periodos_fk_horario',
       'restricoes_horarios_por_dia_periodos.fk_periodo as restricoes_horarios_por_dia_periodos_fk_periodo',
+      'horarios_por_dia.id as horarios_por_dia_id',
       'horarios_por_dia.horario_inicio as horarios_por_dia_horario_inicio',
       'horarios_por_dia.horario_termino as horarios_por_dia_horario_termino',
       connection.raw(`(select count(fk_horario) from restricoes_horarios_por_dia_periodos where restricoes_horarios_por_dia_periodos.fk_horario = horarios_por_dia.id) as horarios_por_dia_qtde_aulas_simultaneas`),

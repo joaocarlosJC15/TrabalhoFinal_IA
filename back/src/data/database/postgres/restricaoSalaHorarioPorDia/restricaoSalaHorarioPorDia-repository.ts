@@ -13,6 +13,7 @@ export class RestricaoSalaHorarioPorDiaRepository implements AddRestricaoSalaHor
     const restricao = await connection.select(
       'restricoes_salas_horarios_por_dia.fk_horario_por_dia as restricoes_salas_horarios_por_dia_fk_horario_por_dia',
       'restricoes_salas_horarios_por_dia.fk_sala as restricoes_salas_horarios_por_dia_fk_sala',
+      'horarios_por_dia.id as horarios_por_dia_id',
       'horarios_por_dia.horario_inicio as horarios_por_dia_horario_inicio',
       'horarios_por_dia.horario_termino as horarios_por_dia_horario_termino',
       connection.raw(`(select count(fk_horario) from restricoes_horarios_por_dia_periodos where restricoes_horarios_por_dia_periodos.fk_horario = horarios_por_dia.id) as horarios_por_dia_qtde_aulas_simultaneas`),
@@ -31,6 +32,7 @@ export class RestricaoSalaHorarioPorDiaRepository implements AddRestricaoSalaHor
     const data = await connection.select(
       'restricoes_salas_horarios_por_dia.fk_horario_por_dia as restricoes_salas_horarios_por_dia_fk_horario_por_dia',
       'restricoes_salas_horarios_por_dia.fk_sala as restricoes_salas_horarios_por_dia_fk_sala',
+      'horarios_por_dia.id as horarios_por_dia_id',
       'horarios_por_dia.horario_inicio as horarios_por_dia_horario_inicio',
       'horarios_por_dia.horario_termino as horarios_por_dia_horario_termino',
       connection.raw(`(select count(fk_horario) from restricoes_horarios_por_dia_periodos where restricoes_horarios_por_dia_periodos.fk_horario = horarios_por_dia.id) as horarios_por_dia_qtde_aulas_simultaneas`),
