@@ -2,19 +2,23 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 
 import { SalaListComponent } from './list/sala-list.component';
-import { RouterModule } from '@angular/router';
-import { SalaRoutes } from './sala.routing';
+import { SalaRoutingModule } from './sala.routing';
+import { HorarioPorDiaModule } from '../horarioPorDia/horarioPorDia.module';
+import { SalaEditComponent } from './edit/sala-edit.component';
 
 @NgModule({
   declarations: [
-    SalaListComponent
+    SalaListComponent,
+    SalaEditComponent
   ],
   imports: [
     SharedModule,
-    RouterModule.forChild(SalaRoutes),
+    SalaRoutingModule,
+    HorarioPorDiaModule
   ],
   exports: [
-    SalaListComponent
+    SalaListComponent,
+    SalaEditComponent
   ],
   providers: [],
 })

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { SalaService } from 'app/shared/services/sala.service';
 import { Sala } from 'app/shared/models/sala.model';
@@ -22,7 +23,10 @@ export class SalaListComponent implements OnInit{
       {name: 'Descrição', prop: 'descricao', minWidth: 300, maxWidth: 300}
   ];
 
-  constructor(public salaService: SalaService) {
+  constructor(
+    public salaService: SalaService,
+    public router: Router
+  ) {
   }
 
   ngOnInit(){
@@ -35,6 +39,8 @@ export class SalaListComponent implements OnInit{
   doubleClick(sala: Sala) {
     if (this.selectData) {
       this.eventSelectData.emit(sala);
+    } else {
+      this.router.navigate(['salas/'+sala.id+'/editar']);
     }
   }
 }

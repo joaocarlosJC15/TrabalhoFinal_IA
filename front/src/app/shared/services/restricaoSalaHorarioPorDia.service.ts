@@ -22,7 +22,7 @@ export class RestricaoSalaHorarioPorDiaService {
   add(id_sala: number, id_horario: number):Observable<RestricaoSalaHorarioPorDia> {
     return this.http.post(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/restricoessalahorariopordia', {
-        fk_Sala: id_sala,
+        fk_sala: id_sala,
         fk_horario_por_dia: id_horario
     })
     .pipe(
