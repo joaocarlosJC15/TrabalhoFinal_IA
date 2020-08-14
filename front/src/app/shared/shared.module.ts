@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -21,6 +21,7 @@ import { DatatableComponent } from './components/datatable/datatable.component';
   imports: [
     NgxDatatableModule,
     NgbModule,
+    NgbNavModule,
     RouterModule,
     CommonModule,
     ReactiveFormsModule,
@@ -29,6 +30,7 @@ import { DatatableComponent } from './components/datatable/datatable.component';
   exports: [
     NgxDatatableModule,
     NgbModule,
+    NgbNavModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,

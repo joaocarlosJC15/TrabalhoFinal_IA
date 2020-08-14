@@ -1,4 +1,4 @@
-<h2>Horários por dia</h2>
+<h2 *ngIf="!selectData">Horários por dia</h2>
 
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" >
   <li ngbNavItem *ngFor="let horario of horariosPorDia">
@@ -6,7 +6,8 @@
     <ng-template ngbNavContent>
       <datatable-cmp
         [rows]="horario.horariosGeradosDiaSemana"
-        [columns]="columns">
+        [columns]="columns"
+        (eventDoubleClick)="doubleClick($event)">
       </datatable-cmp>
     </ng-template>
   </li>

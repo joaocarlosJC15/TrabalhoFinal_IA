@@ -1,0 +1,58 @@
+<h2>Período</h2>
+
+<form [formGroup]="periodoForm" *ngIf="periodoForm">
+  <div class="form-row">
+    <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-6 col-6">
+      <label>ID</label>
+      <input type="number" class="form-control" formControlName="id">
+    </div>
+
+    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+      <label>Nome</label>
+      <input type="text" class="form-control" formControlName="nome">
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Descrição</label>
+      <input type="text" class="form-control" formControlName="descricao">
+    </div>
+  </div>
+</form>
+
+<div class="mt-3 mb-0">
+  <h5>Restrições período</h5>
+</div>
+
+<div style="display: flex; justify-content: flex-end;">
+  <button type="button" class="btn btn-success mt-0" (click)="openModalForSelectHorario(modalSelectHorario)">Nova</button>
+</div>
+
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" >
+  <li ngbNavItem *ngFor="let horario of restricoes">
+    <a ngbNavLink>{{horario.diaSemana.nome}}</a>
+    <ng-template ngbNavContent>
+      <datatable-cmp
+        [rows]="horario.horariosGeradosDiaSemana"
+        [columns]="columnsRestricoes"
+        (eventDoubleClick)="doubleClick($event)">
+      </datatable-cmp>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+<ng-template #modalSelectHorario let-modal>
+  <div class="modal-header">
+    <h2 class="modal-title">Selecione o horário</h2>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <horarioPorDia-list-cmp
+      [selectData]="true"
+      (eventSelectData)="getSelectedHorario($event)">
+    </horarioPorDia-list-cmp>
+  </div>
+</ng-template>

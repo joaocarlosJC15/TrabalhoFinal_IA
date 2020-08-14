@@ -1,21 +1,25 @@
 import { NgModule } from '@angular/core';
 
 import { PeriodoListComponent } from './list/periodo-list.component';
-import { RouterModule } from '@angular/router';
-import { PeriodoRoutes } from './periodo.routing';
+import { PeriodoRoutingModule } from './periodo.routing';
 import { SharedModule } from 'app/shared/shared.module';
+import { PeriodoEditComponent } from './edit/periodo-edit.component';
+import { HorarioPorDiaModule } from '../horarioPorDia/horarioPorDia.module';
 
 
 @NgModule({
   declarations: [
-    PeriodoListComponent
+    PeriodoListComponent,
+    PeriodoEditComponent
   ],
   imports: [
     SharedModule,
-    RouterModule.forChild(PeriodoRoutes),
+    PeriodoRoutingModule,
+    HorarioPorDiaModule
   ],
   exports: [
-    PeriodoListComponent
+    PeriodoListComponent,
+    PeriodoEditComponent
   ],
   providers: [],
 })
