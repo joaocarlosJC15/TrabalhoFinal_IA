@@ -17,11 +17,21 @@ export class ProfessorService {
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
+  add(professor: Professor):Observable<Professor> {
+    return this.http.post(this.url + '/' +  'grades' + '/' + 
+      this.gradeService.getIdGradeOnStorage() + '/professores', professor)
+    .pipe(
+      map((data) => {
+        return this.responseDataToProfessor(data);
+      })
+    );
+  }
+
   get(id_professor: number):Observable<Professor> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/professores' + '/' + id_professor)
     .pipe(
-      map((data: any[]) => {
+      map((data: any) => {
         return this.responseDataToProfessor(data);
       })
     );
