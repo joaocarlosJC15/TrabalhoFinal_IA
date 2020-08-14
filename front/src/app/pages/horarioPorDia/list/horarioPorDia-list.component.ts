@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { HorarioPorDiaService } from 'app/shared/services/horarioPorDia.service';
 
@@ -32,6 +33,7 @@ export class HorarioPorDiaListComponent implements OnInit{
   constructor(
     public horarioPorDiaService: HorarioPorDiaService,
     private diaSemanaService: DiaSemanaService,
+    public router: Router,
     private formarTimePipe: FormatTimePipe) {
   }
 
@@ -47,6 +49,8 @@ export class HorarioPorDiaListComponent implements OnInit{
   doubleClick(horario: HorarioPorDia) {
     if (this.selectData) {
       this.eventSelectData.emit(horario);
+    } else {
+      this.router.navigate(['horariospordia/'+horario.id+'/editar']);
     }
   }
 

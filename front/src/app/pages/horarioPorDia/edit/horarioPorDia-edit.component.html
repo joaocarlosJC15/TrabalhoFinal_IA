@@ -1,0 +1,42 @@
+<h2>Horário por dia</h2>
+
+<div style="display: flex; justify-content: flex-end;" *ngIf="horarioPorDiaForm && action === 'novo'">
+  <button type="button" class="btn btn-success mt-0" 
+    (click)="sendForm()" 
+    [disabled]="!horarioPorDiaForm.valid || submissionForm"
+    >Criar
+  </button>
+</div>
+
+<form [formGroup]="horarioPorDiaForm" *ngIf="horarioPorDiaForm">
+  <div class="form-row">
+    <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-6 col-6">
+      <label>ID</label>
+      <input type="number" class="form-control" formControlName="id">
+    </div>
+
+    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+      <label>Horário início</label>
+      <input type="text" class="form-control" formControlName="horario_inicio">
+    </div>
+
+    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+      <label>Horário término</label>
+      <input type="text" class="form-control" formControlName="horario_termino">
+    </div>
+
+    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+      <label>Dia semana</label>
+      <select name="id_pais" class="form-control select-custom" formControlName="fk_dia_semana">
+				<option *ngFor="let diaSemana of diasSemanas" [value]="diaSemana.id">
+					{{diaSemana.nome}}
+				</option>
+			</select>
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Qtde aulas</label>
+      <input type="text" class="form-control" formControlName="qtde_aulas_simultaneas">
+    </div>
+  </div>
+</form>

@@ -6,8 +6,8 @@ export class HorarioPorDia {
     public id: number,
     public horario_inicio: string,
     public horario_termino: string,
-    public qtde_aulas_simultaneas: number,
-    public fk_dia_semana: number
+    public fk_dia_semana: number,
+    public qtde_aulas_simultaneas?: number,
   ) {
 
   }
@@ -23,8 +23,8 @@ export class HorarioPorDia {
       id, 
       horario_inicio,
       horario_termino,
-      qtde_aulas_simultaneas,
-      fk_dia_semana
+      fk_dia_semana,
+      qtde_aulas_simultaneas
     );
   }
 }

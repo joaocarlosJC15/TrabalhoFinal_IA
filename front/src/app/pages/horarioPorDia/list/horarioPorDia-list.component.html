@@ -1,5 +1,12 @@
 <h2 *ngIf="!selectData">Horários por dia</h2>
 
+<div style="display: flex; justify-content: flex-end;" *ngIf="!selectData">
+  <button type="button" class="btn btn-success mt-0" 
+    (click)="router.navigate(['horariospordia/novo'])" 
+    >Criar
+  </button>
+</div>
+
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" >
   <li ngbNavItem *ngFor="let horario of horariosPorDia">
     <a ngbNavLink>{{horario.diaSemana.nome}}</a>

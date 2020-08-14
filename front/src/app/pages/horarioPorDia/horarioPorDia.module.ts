@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 import { HorarioPorDiaListComponent } from './list/horarioPorDia-list.component';
-import { RouterModule } from '@angular/router';
 import { HorarioPorDiaRoutes } from './horarioPorDia.routing';
+import { HorarioPorDiaEditComponent } from './edit/horarioPorDia-edit.component';
 
 @NgModule({
   declarations: [
-    HorarioPorDiaListComponent
+    HorarioPorDiaListComponent,
+    HorarioPorDiaEditComponent
   ],
   imports: [
     SharedModule,
     RouterModule.forChild(HorarioPorDiaRoutes),
   ],
   exports: [
-    HorarioPorDiaListComponent
+    HorarioPorDiaListComponent,
+    HorarioPorDiaEditComponent
   ],
   providers: [],
 })
