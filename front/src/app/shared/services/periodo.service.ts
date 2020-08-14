@@ -17,6 +17,16 @@ export class PeriodoService {
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
+  get(id_periodo: number):Observable<Periodo> {
+    return this.http.get(this.url + '/' +  'grades' + '/' + 
+      this.gradeService.getIdGradeOnStorage() + '/periodos' + '/' + id_periodo)
+    .pipe(
+      map((data: any[]) => {
+        return this.responseDataToPeriodo(data);
+      })
+    );
+  }
+
   list():Observable<Periodo[]> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/' + 'periodos')

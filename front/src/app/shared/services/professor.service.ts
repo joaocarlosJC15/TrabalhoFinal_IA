@@ -17,6 +17,16 @@ export class ProfessorService {
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
+  get(id_professor: number):Observable<Professor> {
+    return this.http.get(this.url + '/' +  'grades' + '/' + 
+      this.gradeService.getIdGradeOnStorage() + '/professores' + '/' + id_professor)
+    .pipe(
+      map((data: any[]) => {
+        return this.responseDataToProfessor(data);
+      })
+    );
+  }
+
   list():Observable<Professor[]> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/' + 'professores')

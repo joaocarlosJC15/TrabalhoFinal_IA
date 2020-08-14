@@ -17,6 +17,16 @@ export class SalaService {
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
+  get(id_sala: number):Observable<Sala> {
+    return this.http.get(this.url + '/' +  'grades' + '/' + 
+      this.gradeService.getIdGradeOnStorage() + '/salas' + '/' + id_sala)
+    .pipe(
+      map((data: any[]) => {
+        return this.responseDataToSala(data);
+      })
+    );
+  }
+
   list():Observable<Sala[]> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/' + 'salas')
