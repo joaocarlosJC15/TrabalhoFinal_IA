@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ProfessorService } from 'app/shared/services/professor.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { ProfessorService } from 'app/shared/services/professor.service';
 
 import { Professor } from 'app/shared/models/Professor.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
@@ -11,6 +12,10 @@ import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 })
 
 export class ProfessorListComponent implements OnInit{
+
+  @Input() selectData: boolean;
+
+  @Output() eventSelectData = new EventEmitter();
 
   rows: Professor[];
   columns: ColumnDatatable[] = [
@@ -34,6 +39,10 @@ export class ProfessorListComponent implements OnInit{
   }
 
   doubleClick(professor: Professor) {
-    this.router.navigate(['professores/'+professor.id+'/editar']);
+    if (this.selectData) {
+      this.eventSelectData.emit(professor);
+    } else {
+      this.router.navigate(['professores/'+professor.id+'/editar']);
+    }
   }
 }

@@ -1,6 +1,6 @@
-<h2>Professores</h2>
+<h2 *ngIf="!selectData">Professores</h2>
 
-<div style="display: flex; justify-content: flex-end;">
+<div style="display: flex; justify-content: flex-end;" *ngIf="!selectData">
   <button type="button" class="btn btn-success mt-0" 
     (click)="router.navigate(['professores/novo'])" 
     >Criar
@@ -10,7 +10,7 @@
 <datatable-cmp
   [rows]="rows"
   [columns]="columns"
-  [selectionType]="'single'"
+  [selectionType]="selectData ? 'single' : null"
   (eventDoubleClick)="doubleClick($event)"
   >
 </datatable-cmp>

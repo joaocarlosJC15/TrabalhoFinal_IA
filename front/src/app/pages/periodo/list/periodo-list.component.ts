@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { PeriodoService } from 'app/shared/services/periodo.service';
 
 import { Periodo } from 'app/shared/models/periodo.model';
@@ -11,6 +12,10 @@ import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 })
 
 export class PeriodoListComponent implements OnInit{
+
+  @Input() selectData: boolean;
+
+  @Output() eventSelectData = new EventEmitter();
 
   rows: Periodo[];
   columns: ColumnDatatable[] = [
@@ -32,6 +37,10 @@ export class PeriodoListComponent implements OnInit{
   }
 
   doubleClick(periodo: Periodo) {
-    this.router.navigate(['periodos/'+periodo.id+'/editar']);
+    if (this.selectData) {
+      this.eventSelectData.emit(periodo);
+    } else {
+      this.router.navigate(['periodos/'+periodo.id+'/editar']);
+    }
   }
 }

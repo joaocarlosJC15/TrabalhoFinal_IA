@@ -2,7 +2,7 @@
 
 <div style="display: flex; justify-content: flex-end;" *ngIf="periodoForm && action === 'novo'">
   <button type="button" class="btn btn-success mt-0" 
-    (click)="sendForm(modalSelectHorario)" 
+    (click)="sendForm()" 
     [disabled]="!periodoForm.valid || submissionForm"
     >Criar
   </button>
