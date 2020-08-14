@@ -9,6 +9,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { DatatableComponent } from './components/datatable/datatable.component';
+import { FormatTimePipe } from './pipes/format-time.pipe';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { DatatableComponent } from './components/datatable/datatable.component';
     SidebarComponent,
     NavbarComponent,
     FooterComponent,
-    DatatableComponent
+    DatatableComponent,
+    FormatTimePipe
   ],
   imports: [
     NgxDatatableModule,
@@ -37,9 +39,12 @@ import { DatatableComponent } from './components/datatable/datatable.component';
     SidebarComponent,
     NavbarComponent,
     FooterComponent,
-    DatatableComponent
+    DatatableComponent,
+    FormatTimePipe
   ],
-  providers: [],
+  providers: [
+    FormatTimePipe
+  ],
 })
 
 export class SharedModule { }

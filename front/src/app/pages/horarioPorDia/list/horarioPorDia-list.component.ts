@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
 import { HorarioPorDiaService } from 'app/shared/services/horarioPorDia.service';
+
+import { FormatTimePipe } from 'app/shared/pipes/format-time.pipe';
 
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 import { HorarioPorDiaDiaSemana } from 'app/shared/models/horarioPorDiaDiaSemana';
@@ -21,14 +24,15 @@ export class HorarioPorDiaListComponent implements OnInit{
   horariosPorDia: HorarioPorDiaDiaSemana[];
   columns: ColumnDatatable[] = [
     { name: 'ID', prop: 'id', maxWidth: 100},
-    { name: 'Horário início', prop: 'horario_inicio', minWidth: 150, maxWidth: 150},
-    { name: 'Horário término', prop: 'horario_termino', minWidth: 150, maxWidth: 150},
+    { name: 'Horário início', prop: 'horario_inicio', minWidth: 150, maxWidth: 150, pipe: this.formarTimePipe},
+    { name: 'Horário término', prop: 'horario_termino', minWidth: 150, maxWidth: 150, pipe: this.formarTimePipe},
     { name: 'Qtde aulas simultâneas', prop: 'qtde_aulas_simultaneas', minWidth: 250, maxWidth: 250}
   ];
 
   constructor(
     public horarioPorDiaService: HorarioPorDiaService,
-    private diaSemanaService: DiaSemanaService) {
+    private diaSemanaService: DiaSemanaService,
+    private formarTimePipe: FormatTimePipe) {
   }
 
   ngOnInit(){

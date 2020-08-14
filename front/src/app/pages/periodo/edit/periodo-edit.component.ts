@@ -7,6 +7,8 @@ import { PeriodoService } from 'app/shared/services/periodo.service';
 import { RestricaoHorarioPorDiaPeriodoService } from 'app/shared/services/restricaoHorarioPorDiaPeriodo.service';
 import { DiaSemanaService } from 'app/shared/services/diaSemana.service';
 
+import { FormatTimePipe } from 'app/shared/pipes/format-time.pipe';
+
 import { Periodo } from 'app/shared/models/periodo.model';
 import { RestricaoHorarioPorDiaPeriodo } from 'app/shared/models/restricaoHorarioPorDiaPeriodo.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
@@ -29,8 +31,8 @@ export class PeriodoEditComponent implements OnInit{
   restricoes: HorarioPorDiaDiaSemana[] = [];
   columnsRestricoes: ColumnDatatable[] = [
     { name: 'ID', prop: 'id', maxWidth: 100 },
-    { name: 'Nome', prop: 'horario_inicio', minWidth: 200, maxWidth: 200 },
-    { name: 'Descrição', prop: 'horario_termino', minWidth: 300, maxWidth: 300 }
+    { name: 'Horário início', prop: 'horario_inicio', minWidth: 200, maxWidth: 200, pipe: this.formatTimePipe },
+    { name: 'Horário término', prop: 'horario_termino', minWidth: 300, maxWidth: 300, pipe: this.formatTimePipe }
   ];
 
   constructor(
@@ -39,7 +41,8 @@ export class PeriodoEditComponent implements OnInit{
     private periodoService: PeriodoService,
     private restricaoHorarioPorDiaPeriodoService: RestricaoHorarioPorDiaPeriodoService,
     private diaSemanaService: DiaSemanaService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private formatTimePipe: FormatTimePipe
   ) {}
 
   ngOnInit() {

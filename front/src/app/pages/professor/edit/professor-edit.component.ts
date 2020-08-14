@@ -7,6 +7,8 @@ import { ProfessorService } from 'app/shared/services/professor.service';
 import { RestricaoProfessorHorarioPorDiaService } from 'app/shared/services/restricaoProfessorHorarioPorDia.service';
 import { DiaSemanaService } from 'app/shared/services/diaSemana.service';
 
+import { FormatTimePipe } from 'app/shared/pipes/format-time.pipe';
+
 import { Professor } from 'app/shared/models/professor.model';
 import { ColumnDatatable } from 'app/shared/models/columnDatatable.model';
 import { HorarioPorDia } from 'app/shared/models/horarioPorDia.model';
@@ -29,8 +31,8 @@ export class ProfessorEditComponent implements OnInit{
   restricoes: HorarioPorDiaDiaSemana[] = [];
   columnsRestricoes: ColumnDatatable[] = [
     { name: 'ID', prop: 'id', maxWidth: 100 },
-    { name: 'Nome', prop: 'horario_inicio', minWidth: 200, maxWidth: 200 },
-    { name: 'Descrição', prop: 'horario_termino', minWidth: 300, maxWidth: 300 }
+    { name: 'Horário início', prop: 'horario_inicio', minWidth: 200, maxWidth: 200, pipe: this.formatTimePipe },
+    { name: 'Horário término', prop: 'horario_termino', minWidth: 300, maxWidth: 300, pipe: this.formatTimePipe}
   ];
 
   constructor(
@@ -39,7 +41,8 @@ export class ProfessorEditComponent implements OnInit{
     private professorService: ProfessorService,
     private restricaoprofessorHorarioPorDiaService: RestricaoProfessorHorarioPorDiaService,
     private diaSemanaService: DiaSemanaService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private formatTimePipe: FormatTimePipe
   ) {}
 
   ngOnInit() {

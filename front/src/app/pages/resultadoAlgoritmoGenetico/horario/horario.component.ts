@@ -5,6 +5,8 @@ import { DiaSemanaService } from 'app/shared/services/diaSemana.service';
 import { PeriodoService } from 'app/shared/services/periodo.service';
 import { HorarioGeradoService } from 'app/shared/services/horarioGerado.service';
 
+import { FormatTimePipe } from 'app/shared/pipes/format-time.pipe';
+
 import { DiaSemana } from 'app/shared/models/diaSemana.model';
 import { Periodo } from 'app/shared/models/periodo.model';
 import { HorarioGerado } from 'app/shared/models/horarioGerado.model';
@@ -22,8 +24,8 @@ export class HorarioComponent implements OnInit{
   horariosGeradosPeriodos: HorarioGeradoPeriodo[] = []
 
   columns: ColumnDatatable[] = [
-    { name: 'Horário início', prop: 'horarioPorDia.horario_inicio', minWidth: 150, maxWidth: 150},
-    { name: 'Horário término', prop: 'horarioPorDia.horario_termino', minWidth: 150, maxWidth: 150},
+    { name: 'Horário início', prop: 'horarioPorDia.horario_inicio', minWidth: 150, maxWidth: 150, pipe: this.formatTimePipe},
+    { name: 'Horário término', prop: 'horarioPorDia.horario_termino', minWidth: 150, maxWidth: 150, pipe: this.formatTimePipe},
     { name: 'Matéria', prop: 'materia.nome', minWidth: 200, maxWidth: 200},
     { name: 'Professor', prop: 'materia.professor.nome', minWidth: 150, maxWidth: 150},
     { name: 'Sala', prop: 'sala.nome', minWidth: 100}
@@ -33,7 +35,8 @@ export class HorarioComponent implements OnInit{
     private route: ActivatedRoute,
     private diaSemanaService: DiaSemanaService,
     private periodoService: PeriodoService,
-    private horarioGeradoService: HorarioGeradoService
+    private horarioGeradoService: HorarioGeradoService,
+    private formatTimePipe: FormatTimePipe
   ) {}
 
   ngOnInit(){
