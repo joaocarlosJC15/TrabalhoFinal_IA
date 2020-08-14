@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
-import { GradeComponent } from './grade.component';
+import { GradeListComponent } from './list/grade-list.component';
+import { GradeEditComponent } from './edit/grade-edit.component';
 
 export const GradeRoutes: Routes = [
-  { path: 'grades', component: GradeComponent },
+  { path: 'grades', component: GradeListComponent },
+  { path: 'grades/novo', component: GradeEditComponent },
 ];

@@ -1,0 +1,28 @@
+<h2>Grade</h2>
+
+<div style="display: flex; justify-content: flex-end;" *ngIf="gradeForm && action === 'novo'">
+  <button type="button" class="btn btn-success mt-0" 
+    (click)="sendForm()" 
+    [disabled]="!gradeForm.valid || submissionForm"
+    >Criar
+  </button>
+</div>
+
+<form [formGroup]="gradeForm" *ngIf="gradeForm">
+  <div class="form-row">
+    <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-6 col-6">
+      <label>ID</label>
+      <input type="number" class="form-control" formControlName="id">
+    </div>
+
+    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+      <label>Nome</label>
+      <input type="text" class="form-control" formControlName="nome">
+    </div>
+
+    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6">
+      <label>Descrição</label>
+      <input type="text" class="form-control" formControlName="descricao">
+    </div>
+  </div>
+</form>
