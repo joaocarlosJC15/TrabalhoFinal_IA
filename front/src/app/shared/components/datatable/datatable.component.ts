@@ -10,6 +10,7 @@ export class DatatableComponent{
   @Input() rows: any[];
   @Input() columns: ColumnDatatable[];
   @Input() selectionType: string;
+  @Input() limitRows: number;
 
   @Output() eventSelectData = new EventEmitter();
   @Output() eventDoubleClick = new EventEmitter();
