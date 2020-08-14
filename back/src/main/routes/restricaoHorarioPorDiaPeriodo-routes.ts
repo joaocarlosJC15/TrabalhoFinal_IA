@@ -7,7 +7,7 @@ import { makeListRestricaoHorarioPorDiaPeriodoController } from '../factories/re
 import { makeGetRestricaoHorarioPorDiaPeriodoController } from '../factories/restricaoHorarioPorDiaPeriodo/get/get-restricaoHorarioPorDiaPeriodo-controller-factory';
 
 export default (router: Router): void => {
-  router.post('/grades/:id_grade/restricoeshorariopordia', adaptRoute(makeAddRestricaoHorarioPorDiaPeriodoController()));
-  router.get('/grades/:id_grade/restricoeshorariopordia', adaptRoute(makeListRestricaoHorarioPorDiaPeriodoController()));
-  router.get('/grades/:id_grade/restricoeshorariopordia/:id_periodo', adaptRoute(makeGetRestricaoHorarioPorDiaPeriodoController()));
+  router.post('/grades/:id_grade/restricoeshorariopordiaperiodo', adaptRoute(makeAddRestricaoHorarioPorDiaPeriodoController()));
+  router.get('/grades/:id_grade/restricoeshorariopordiaperiodo', adaptRoute(makeListRestricaoHorarioPorDiaPeriodoController()));
+  router.get('/grades/:id_grade/restricoeshorariopordiaperiodo/:id_periodo', adaptRoute(makeGetRestricaoHorarioPorDiaPeriodoController()));
 }

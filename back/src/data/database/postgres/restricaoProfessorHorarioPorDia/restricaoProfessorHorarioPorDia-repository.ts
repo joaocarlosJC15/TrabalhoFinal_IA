@@ -10,7 +10,21 @@ export class RestricaoProfessorHorarioPorDiaRepository implements AddRestricaoPr
   async add (addRestricaoProfessorHorarioPorDiaData: AddRestricaoProfessorHorarioPorDiaEntity): Promise<RestricaoProfessorHorarioPorDia> {
     const data = await connection('restricoes_professores_horarios_por_dia').insert(addRestricaoProfessorHorarioPorDiaData).returning('*');
     
-    return data && this.RestricaoProfessorHorarioPorDiaSerializer(data[0]);
+    const restricao = await connection.select(
+      'restricoes_professores_horarios_por_dia.fk_horario_por_dia as restricoes_professores_horarios_por_dia_fk_horario_por_dia',
+      'restricoes_professores_horarios_por_dia.fk_professor as restricoes_professores_horarios_por_dia_fk_professor',
+      'horarios_por_dia.horario_inicio as horarios_por_dia_horario_inicio',
+      'horarios_por_dia.horario_termino as horarios_por_dia_horario_termino',
+      connection.raw(`(select count(fk_horario) from restricoes_horarios_por_dia_periodos where restricoes_horarios_por_dia_periodos.fk_horario = horarios_por_dia.id) as horarios_por_dia_qtde_aulas_simultaneas`),
+      'horarios_por_dia.fk_dia_semana as horarios_por_dia_fk_dia_semana',
+      'horarios_por_dia.fk_grade as horarios_por_dia_fk_grade',
+    )
+    .from('restricoes_professores_horarios_por_dia')
+    .join('horarios_por_dia', 'restricoes_professores_horarios_por_dia.fk_horario_por_dia', 'horarios_por_dia.id')
+    .where('restricoes_professores_horarios_por_dia.fk_professor', data[0].fk_professor)
+    .where('restricoes_professores_horarios_por_dia.fk_horario_por_dia', data[0].fk_horario_por_dia);
+
+    return deserializeRestricaoProfessorHorarioPorDia(restricao[0]);
   }
 
   async get(id_professor: number, id_grade: number): Promise<RestricaoProfessorHorarioPorDia []> {
