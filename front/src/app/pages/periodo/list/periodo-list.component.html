@@ -1,5 +1,12 @@
 <h2>Periodos</h2>
 
+<div style="display: flex; justify-content: flex-end;">
+  <button type="button" class="btn btn-success mt-0" 
+    (click)="router.navigate(['periodos/novo'])" 
+    >Criar
+  </button>
+</div>
+
 <datatable-cmp
   [rows]="rows"
   [columns]="columns"

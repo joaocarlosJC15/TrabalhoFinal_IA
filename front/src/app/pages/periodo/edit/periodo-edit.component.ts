@@ -24,6 +24,7 @@ export class PeriodoEditComponent implements OnInit{
   periodoForm: FormGroup;
   periodo: Periodo;
   submissionForm: boolean;
+  action: string;
 
   restricoes: HorarioPorDiaDiaSemana[] = [];
   columnsRestricoes: ColumnDatatable[] = [
@@ -42,6 +43,16 @@ export class PeriodoEditComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    if (this.route.snapshot.url[0].path === 'novo') {
+      this.action = 'novo';
+      this.initializeForm();
+    } else if (this.route.snapshot.url[1].path === 'editar') {
+      this.action = 'editar';
+      this.actionEdit();
+    }
+  }
+
+  actionEdit(): void {
     this.route.params.subscribe(params => {
       let diasSemana: DiaSemana[];
 
@@ -62,12 +73,29 @@ export class PeriodoEditComponent implements OnInit{
     });
   }
 
-  initializeForm(periodo: Periodo) {
+  initializeForm(periodo: Periodo = null): void {
     this.periodoForm = new FormGroup({
-      id: new FormControl({value: periodo.id, disabled: true}),
-      nome: new FormControl(periodo.nome, Validators.required),
-      descricao: new FormControl(periodo.descricao)
+      id: new FormControl({value: periodo ? periodo.id : null, disabled: true}),
+      nome: new FormControl(periodo ? periodo.nome : null, Validators.required),
+      descricao: new FormControl(periodo ? periodo.descricao : null)
     });
+  }
+
+  sendForm() {
+    this.periodoForm.markAllAsTouched();
+
+    if (this.periodoForm.valid) {
+      this.submissionForm = true;
+
+      const { id, nome, descricao } = this.periodoForm.getRawValue();
+      const periodo = new Periodo(id, nome, descricao);
+
+      this.periodoService.add(periodo).subscribe(periodo => {
+        alert("Período criado com sucesso!");
+
+        this.router.navigate(['periodos']);
+      })
+    }
   }
 
   generateRestricoesHorarios(diasSemana: DiaSemana[], restricoes: RestricaoHorarioPorDiaPeriodo[]): HorarioPorDiaDiaSemana[] {

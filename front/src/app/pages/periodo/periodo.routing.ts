@@ -7,6 +7,7 @@ import { PeriodoEditComponent } from './edit/periodo-edit.component';
 export const PeriodoRoutes: Routes = [
   { path: '', component: PeriodoListComponent },
   { path: ':id_periodo/editar', component: PeriodoEditComponent },
+  { path: 'novo', component: PeriodoEditComponent }
 ];
 
 @NgModule({
