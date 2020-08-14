@@ -29,6 +29,15 @@ export class GradeService {
     }
   }
 
+  add(grade: Grade):Observable<Grade> {
+    return this.http.post(this.url + '/' +  'grades', grade)
+    .pipe(
+      map((data: any) => {
+        return this.responseDataToGrade(data);
+      })
+    );
+  }
+
   list():Observable<Grade[]> {
     return this.http.get(this.url + '/' + 'grades').pipe(
       map((data: any[]) => {

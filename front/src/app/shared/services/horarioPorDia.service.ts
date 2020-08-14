@@ -17,6 +17,16 @@ export class HorarioPorDiaService {
 
   constructor(private http: HttpClient, private gradeService: GradeService) {}
 
+  add(horarioPorDia: HorarioPorDia):Observable<HorarioPorDia> {
+    return this.http.post(this.url + '/' +  'grades' + '/' + 
+      this.gradeService.getIdGradeOnStorage() + '/horariospordia', horarioPorDia)
+    .pipe(
+      map((data: any) => {
+        return this.responseDataToHorarioPorDia(data);
+      })
+    );
+  }
+
   get(id_horario: number):Observable<HorarioPorDia> {
     return this.http.get(this.url + '/' +  'grades' + '/' + 
       this.gradeService.getIdGradeOnStorage() + '/horariospordia' + '/' + id_horario)
