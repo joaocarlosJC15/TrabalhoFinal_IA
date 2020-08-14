@@ -7,6 +7,7 @@ import { ProfessorEditComponent } from './edit/professor-edit.component';
 export const ProfessorRoutes: Routes = [
   { path: '', component: ProfessorListComponent },
   { path: ':id_professor/editar', component: ProfessorEditComponent },
+  { path: 'novo', component: ProfessorEditComponent }
 ];
 
 @NgModule({

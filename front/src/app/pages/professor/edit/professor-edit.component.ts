@@ -24,6 +24,7 @@ export class ProfessorEditComponent implements OnInit{
   professorForm: FormGroup;
   professor: Professor;
   submissionForm: boolean;
+  action: string;
 
   restricoes: HorarioPorDiaDiaSemana[] = [];
   columnsRestricoes: ColumnDatatable[] = [
@@ -42,6 +43,16 @@ export class ProfessorEditComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    if (this.route.snapshot.url[0].path === 'novo') {
+      this.action = 'novo';
+      this.initializeForm();
+    } else if (this.route.snapshot.url[1].path === 'editar') {
+      this.action = 'editar';
+      this.actionEdit();
+    }
+  }
+
+  actionEdit(): void {
     this.route.params.subscribe(params => {
       let diasSemana: DiaSemana[];
 
@@ -63,14 +74,31 @@ export class ProfessorEditComponent implements OnInit{
     });
   }
 
-  initializeForm(professor: Professor) {
+  initializeForm(professor: Professor = null) {
     this.professorForm = new FormGroup({
-      id: new FormControl({value: professor.id, disabled: true}),
-      nome: new FormControl(professor.nome, Validators.required),
-      descricao: new FormControl(professor.descricao),
-      data_nascimento: new FormControl(professor.data_nascimento),
-      email: new FormControl(professor.email)
+      id: new FormControl({value: professor ? professor.id : null, disabled: true}),
+      nome: new FormControl(professor ? professor.nome : null, Validators.required),
+      descricao: new FormControl(professor ? professor.descricao : null),
+      data_nascimento: new FormControl(professor ? professor.data_nascimento : null),
+      email: new FormControl(professor ? professor.email : null)
     });
+  }
+
+  sendForm() {
+    this.professorForm.markAllAsTouched();
+
+    if (this.professorForm.valid) {
+      this.submissionForm = true;
+
+      const { id, nome, descricao, data_nascimento, email } = this.professorForm.getRawValue();
+      const periodo = new Professor(id, nome, descricao, data_nascimento, email);
+
+      this.professorService.add(periodo).subscribe(professor => {
+        alert("Professor criado com sucesso!");
+
+        this.router.navigate(['professores']);
+      })
+    }
   }
 
   generateRestricoesHorarios(diasSemana: DiaSemana[], restricoes: RestricaoProfessorHorarioPorDia[]): HorarioPorDiaDiaSemana[] {
